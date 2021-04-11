@@ -1,11 +1,10 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Newtonsoft.Json;
 using Tunetoon.Accounts;
-using Tunetoon.Utilities;
 
-namespace Tunetoon
+namespace Tunetoon.Utilities
 {
     class DataHandler
     {
