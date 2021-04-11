@@ -128,14 +128,18 @@ namespace Tunetoon.Patcher
                 {
                     File.Delete(downloadedFilePath);
                     continue;
-                }        
+                }
+
+                // Patch hashes are compared to the downloaded file
+                bool patch = GamePatchUtils.FileIsCorrect(downloadedFilePath, compHash);
 
                 if (GamePatchUtils.Extract(downloadedFilePath, extractedFilePath, "bzip2") != 0)
                 {
                     continue;
                 }
 
-                if (GamePatchUtils.FileIsCorrect(extractedFilePath, compHash))
+                // Full file hashes are compared to the extracted file
+                if (patch || GamePatchUtils.FileIsCorrect(extractedFilePath, compHash))
                 {
                     return;
                 }
@@ -193,18 +197,20 @@ namespace Tunetoon.Patcher
                 string extractedFilePath = rewrittenPath + patchInfo.Filename + ".extracted";
 
                 GamePatchUtils.Patch(extractedFilePath, localFilePath);
+                string patchedFilePath = localFilePath + ".tmp";
 
-                if (GamePatchUtils.FileIsCorrect(localFilePath, patchInfo.FinalFileHash))
+                if (GamePatchUtils.FileIsCorrect(patchedFilePath, patchInfo.FinalFileHash))
                 {
                     File.Delete(localFilePath);
-                    File.Move(localFilePath + ".tmp", localFilePath);
+                    File.Move(patchedFilePath, localFilePath);
                     patchProgress.FileProcessed(progress);
                 }
                 else
                 {
-                    File.Delete(localFilePath + ".tmp");
+                    File.Delete(patchedFilePath);
                     status = PatcherStatus.PATCH_FAILURE;
                 }
+                File.Delete(extractedFilePath);
             }
 
             foreach (var file in filesNeeded)
