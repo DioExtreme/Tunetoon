@@ -59,6 +59,12 @@ namespace Tunetoon.Login
                 account.LoggedIn = true;
                 return;
             }
+
+            if (status == "false")
+            {
+                return;
+            }
+
             if (status == "partial")
             { 
                 result.AuthToken = result.Banner.Contains("ToonGuard") ? "ToonGuard" : "Two-Step Token";
