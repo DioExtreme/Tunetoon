@@ -1,3 +1,7 @@
+## Tunetoon
+
+Tunetoon is an alternative multi toon launcher for Toontown Rewritten and Corporate Clash.
+
 <img src="https://i.imgur.com/bt1jqpr.png" width = 500>
 
 It is **preferred** that the games be installed with their official setups prior to using this.
@@ -10,7 +14,7 @@ Download from [Releases](https://github.com/DioExtreme/Tunetoon/releases)
 - Game patching for both servers
 - Indicator for logged in accounts
 - End game instances with a click
-- Toon and District select for Corporate Clash
+- Toon and district select for Corporate Clash
 - Accounts are auto-saved and secured with DPAPI
 - Account data is non-transferrable to another computer for security reasons
 
