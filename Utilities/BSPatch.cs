@@ -72,8 +72,8 @@ namespace Tunetoon.Utilities
 			*/
 
             long controlLength, diffLength, newSize;
-            Func<Stream> openPatchStream = () => new FileStream(patchFile, FileMode.Open, FileAccess.Read);
-           
+            Stream openPatchStream() => new FileStream(patchFile, FileMode.Open, FileAccess.Read);
+
             // read header
             using (Stream patchStream = openPatchStream())
             using (BinaryReader binaryReader = new BinaryReader(patchStream))
