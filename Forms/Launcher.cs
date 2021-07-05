@@ -73,7 +73,7 @@ namespace Tunetoon.Forms
 
         private void HandleConfig()
         {
-            if (config.GameServer == Server.REWRITTEN)
+            if (config.GameServer == Server.Rewritten)
             {
                 currentAccountList = rewrittenAccountList;
                 gamePatcher = rewrittenPatcher;
@@ -155,11 +155,11 @@ namespace Tunetoon.Forms
 
             try
             {
-                if (config.GameServer == Server.REWRITTEN && !Directory.Exists(config.RewrittenPath))
+                if (config.GameServer == Server.Rewritten && !Directory.Exists(config.RewrittenPath))
                 {
                     Directory.CreateDirectory(config.RewrittenPath);
                 }
-                else if (config.GameServer == Server.CLASH && !Directory.Exists(config.ClashPath))
+                else if (config.GameServer == Server.Clash && !Directory.Exists(config.ClashPath))
                 {
                     Directory.CreateDirectory(config.ClashPath);
                 }
@@ -194,8 +194,8 @@ namespace Tunetoon.Forms
 
             LoginButton.Enabled = false;
 
-            if (config.GameServer == Server.REWRITTEN && !Directory.Exists(config.RewrittenPath) ||
-                config.GameServer == Server.CLASH && !Directory.Exists(config.ClashPath))
+            if (config.GameServer == Server.Rewritten && !Directory.Exists(config.RewrittenPath) ||
+                config.GameServer == Server.Clash && !Directory.Exists(config.ClashPath))
             {
                 MessageBox.Show("Game directory missing.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -263,7 +263,7 @@ namespace Tunetoon.Forms
             serverMenuItem.Enabled = false;
 
             await loginHandler.LoginAll(currentAccountList);
-            if (config.GameServer == Server.REWRITTEN)
+            if (config.GameServer == Server.Rewritten)
             {
                 await HandleTwoStep();
             }
@@ -396,7 +396,7 @@ namespace Tunetoon.Forms
 
             var account = currentAccountList[e.RowIndex];
 
-            if (e.ColumnIndex == Toon.Index && !accountGrid.moveMode)
+            if (e.ColumnIndex == Toon.Index && !accountGrid.MoveMode)
             {
                 var accountEdit = new AccountEdit(account, e.RowIndex);
                 accountEdit.Edited += AccountEditComplete;
@@ -413,14 +413,14 @@ namespace Tunetoon.Forms
 
         private void AccGrid_DragDrop(object sender, DragEventArgs e)
         {
-            if (accountGrid.rowIndexToDrop < 0)
+            if (accountGrid.RowIndexToDrop < 0)
             {
                 return;
             }
 
-            var accountToMove = currentAccountList[accountGrid.rowIndexToDrop];
+            var accountToMove = currentAccountList[accountGrid.RowIndexToDrop];
             var color = accountToMove.LoggedIn ? Color.Green : Color.Red;
-            ChangeEndCellColor(accountGrid.rowIndexToDrop, color);
+            ChangeEndCellColor(accountGrid.RowIndexToDrop, color);
         }
 
         private void EndSelected_Click(object sender, EventArgs e)
@@ -437,7 +437,7 @@ namespace Tunetoon.Forms
 
         private void EndAll_Click(object sender, EventArgs e)
         {
-            if (config.GlobalEndAll || config.GameServer == Server.REWRITTEN)
+            if (config.GlobalEndAll || config.GameServer == Server.Rewritten)
             {
                 foreach (var acc in rewrittenAccountList)
                 {
@@ -445,7 +445,7 @@ namespace Tunetoon.Forms
                 }
             }
             
-            if (config.GlobalEndAll || config.GameServer == Server.CLASH)
+            if (config.GlobalEndAll || config.GameServer == Server.Clash)
             {
                 foreach (var acc in clashAccountList)
                 {
@@ -489,7 +489,7 @@ namespace Tunetoon.Forms
 
         private async void Rewritten_Click(object sender, EventArgs e)
         {
-            config.GameServer = Server.REWRITTEN;
+            config.GameServer = Server.Rewritten;
             HandleConfig();
 
             bindingSource.DataSource = rewrittenAccountList;
@@ -500,7 +500,7 @@ namespace Tunetoon.Forms
 
         private async void Clash_Click(object sender, EventArgs e)
         {
-            config.GameServer = Server.CLASH;
+            config.GameServer = Server.Clash;
             HandleConfig();
 
             bindingSource.DataSource = clashAccountList;
@@ -546,7 +546,7 @@ namespace Tunetoon.Forms
                 endSelectedMenuItem.Visible = false;
             }
 
-            accountGrid.moveMode = moveRowsMenuItem.Checked = !moveRowsMenuItem.Checked;
+            accountGrid.MoveMode = moveRowsMenuItem.Checked = !moveRowsMenuItem.Checked;
 
             accountGrid.ClearGridSelections();
         }

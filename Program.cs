@@ -9,13 +9,13 @@ namespace Tunetoon
 {
     internal static class Program 
     {
-        public static HttpClient httpClient = new HttpClient();
+        public static HttpClient HttpClient = new HttpClient();
 
         [STAThread]
         private static void Main() 
         {
             ServicePointManager.DefaultConnectionLimit = 2 * Environment.ProcessorCount;
-            httpClient.DefaultRequestHeaders.Add("User-Agent", "Tunetoon - A multi-toon launcher.");
+            HttpClient.DefaultRequestHeaders.Add("User-Agent", "Tunetoon - A multi-toon launcher.");
 
             AppDomain.CurrentDomain.UnhandledException += App_UnhandledException;
             Directory.SetCurrentDirectory(Application.StartupPath);

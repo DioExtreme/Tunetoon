@@ -10,7 +10,7 @@ namespace Tunetoon.Patcher
 {
     public class RewrittenPatcher : IPatcher
     {
-        private HttpClient httpClient = Program.httpClient;
+        private HttpClient httpClient = Program.HttpClient;
         private FileDownloader fileDownloader = new FileDownloader();
 
         private CancellationTokenSource cts = new CancellationTokenSource();
@@ -24,7 +24,7 @@ namespace Tunetoon.Patcher
 
         private List<string> mirrors;
 
-        private const string updateUrl = "https://cdn.toontownrewritten.com";
+        private const string UpdateUrl = "https://cdn.toontownrewritten.com";
 
         private PatchProgress patchProgress = new PatchProgress();
         private PatcherStatus status;
@@ -36,19 +36,19 @@ namespace Tunetoon.Patcher
 
         public bool HasFailed()
         {
-            return status != PatcherStatus.SUCCESS;
+            return status != PatcherStatus.Success;
         }
 
         public void GetPatchManifest()
         {
             try
             {
-                string json = httpClient.GetStringAsync(updateUrl + "/content/patchmanifest.txt").Result;
+                string json = httpClient.GetStringAsync(UpdateUrl + "/content/patchmanifest.txt").Result;
                 patchManifest = JsonConvert.DeserializeObject<Dictionary<string, RewrittenFile>>(json);
             }
             catch
             {
-                status = PatcherStatus.PATCH_MANIFEST_FAILURE;
+                status = PatcherStatus.PatchManifestFailure;
             }
         }
 
@@ -56,12 +56,12 @@ namespace Tunetoon.Patcher
         {
             try
             {
-                string json = httpClient.GetStringAsync(updateUrl + "/mirrors.txt").Result;
+                string json = httpClient.GetStringAsync(UpdateUrl + "/mirrors.txt").Result;
                 mirrors = JsonConvert.DeserializeObject<List<string>>(json);
             }
             catch
             {
-                status = PatcherStatus.MIRRORS_FAILURE;
+                status = PatcherStatus.MirrorsFailure;
             }
         }
 
@@ -147,7 +147,7 @@ namespace Tunetoon.Patcher
                 File.Delete(extractedFilePath);
             }
 
-            status = PatcherStatus.FILE_DOWNLOAD_FAILURE;
+            status = PatcherStatus.FileDownloadFailure;
             cts.Cancel();
         }
 
@@ -155,7 +155,7 @@ namespace Tunetoon.Patcher
         {
             GetMirrors();
 
-            if (status == PatcherStatus.MIRRORS_FAILURE)
+            if (status == PatcherStatus.MirrorsFailure)
             {
                 return;
             }
@@ -208,7 +208,7 @@ namespace Tunetoon.Patcher
                 else
                 {
                     File.Delete(patchedFilePath);
-                    status = PatcherStatus.PATCH_FAILURE;
+                    status = PatcherStatus.PatchFailure;
                 }
                 File.Delete(extractedFilePath);
             }

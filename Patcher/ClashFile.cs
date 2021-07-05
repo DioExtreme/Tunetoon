@@ -1,10 +1,14 @@
-﻿namespace Tunetoon.Patcher
+﻿using Newtonsoft.Json;
+
+namespace Tunetoon.Patcher
 {
     public class ClashFile
     {
         public string FileName;
         public string FilePath;
         public string Sha1;
-        public string Compressed_sha1;
+
+        [JsonProperty(PropertyName = "compressed_sha1")]
+        public string CompressedSha1;
     }
 }

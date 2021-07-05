@@ -9,8 +9,8 @@ namespace Tunetoon.Grid
     {
         private int clickedRowIndex;
 
-        public int rowIndexToDrop;
-        public bool moveMode;
+        public int RowIndexToDrop;
+        public bool MoveMode;
 
         public AccountGrid()
         {
@@ -90,7 +90,7 @@ namespace Tunetoon.Grid
         // Registers the index of the row we want to move
         protected override void OnMouseDown(MouseEventArgs e)
         {
-            if (!moveMode)
+            if (!MoveMode)
             {
                 base.OnMouseDown(e);
                 return;
@@ -103,7 +103,7 @@ namespace Tunetoon.Grid
         // Dragging effect when moving a row
         protected override void OnMouseMove(MouseEventArgs e)
         {
-            if (!moveMode)
+            if (!MoveMode)
             {
                 base.OnMouseMove(e);
                 return;
@@ -121,7 +121,7 @@ namespace Tunetoon.Grid
         // Checks login for an selected account
         protected override void OnSelectionChanged(EventArgs e)
         {
-            if (moveMode)
+            if (MoveMode)
             {
                 base.OnSelectionChanged(e);
                 return;
@@ -146,7 +146,7 @@ namespace Tunetoon.Grid
         // Unchecks login for an unselected account
         protected override void OnRowLeave(DataGridViewCellEventArgs e)
         {
-            if (moveMode)
+            if (MoveMode)
             {
                 base.OnRowLeave(e);
                 return;
@@ -168,9 +168,9 @@ namespace Tunetoon.Grid
         {
             Point clientPoint = PointToClient(new Point(e.X, e.Y));
 
-            rowIndexToDrop = HitTest(clientPoint.X, clientPoint.Y).RowIndex;
+            RowIndexToDrop = HitTest(clientPoint.X, clientPoint.Y).RowIndex;
 
-            if (rowIndexToDrop < 0 || rowIndexToDrop == Rows.Count - 1)
+            if (RowIndexToDrop < 0 || RowIndexToDrop == Rows.Count - 1)
             {
                 base.OnDragDrop(e);
                 return;
@@ -196,10 +196,10 @@ namespace Tunetoon.Grid
                 }
 
                 bindingSource.RemoveAt(clickedRowIndex);
-                bindingSource.Insert(rowIndexToDrop, accToMove);
+                bindingSource.Insert(RowIndexToDrop, accToMove);
 
                 ClearGridSelections();
-                Rows[rowIndexToDrop].Selected = true;
+                Rows[RowIndexToDrop].Selected = true;
             }
 
             base.OnDragDrop(e);

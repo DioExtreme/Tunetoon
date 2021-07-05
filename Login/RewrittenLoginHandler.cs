@@ -8,8 +8,8 @@ namespace Tunetoon.Login
 {
     public class RewrittenLoginHandler : LoginHandlerBase<RewrittenAccount>
     {
-        private HttpClient httpClient = Program.httpClient;
-        private const string rewrittenBaseAddress = "https://www.toontownrewritten.com";
+        private HttpClient httpClient = Program.HttpClient;
+        private const string RewrittenBaseAddress = "https://www.toontownrewritten.com";
 
         // See: https://github.com/ToontownRewritten/api-doc/blob/master/login.md
         public override void GetAuthResponse(RewrittenAccount account)
@@ -19,7 +19,7 @@ namespace Tunetoon.Login
 
             var data = new Dictionary<string, string>();
 
-            using (var request = new HttpRequestMessage(HttpMethod.Post, rewrittenBaseAddress + "/api/login?format=json"))
+            using (var request = new HttpRequestMessage(HttpMethod.Post, RewrittenBaseAddress + "/api/login?format=json"))
             {
                 if (status == null || status == "true" || status == "false")
                 {

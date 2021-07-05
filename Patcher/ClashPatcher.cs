@@ -10,7 +10,7 @@ namespace Tunetoon.Patcher
 {
     public class ClashPatcher : IPatcher
     {
-        private HttpClient httpClient = Program.httpClient;
+        private HttpClient httpClient = Program.HttpClient;
         private FileDownloader fileDownloader = new FileDownloader();
 
         private CancellationTokenSource cts = new CancellationTokenSource();
@@ -23,7 +23,7 @@ namespace Tunetoon.Patcher
 
         private const string WinManifest = "https://corporateclash.net/api/v1/launcher/manifest/v2/windows_production.js";
         private const string ResourceManifest = "https://corporateclash.net/api/v1/launcher/manifest/v2/resources_production.js";
-        private const string updateUrl = "https://aws1.corporateclash.net/productionv2/";
+        private const string UpdateUrl = "https://aws1.corporateclash.net/productionv2/";
 
         private PatchProgress patchProgress = new PatchProgress();
         private PatcherStatus status;
@@ -35,7 +35,7 @@ namespace Tunetoon.Patcher
 
         public bool HasFailed()
         {
-            return status != PatcherStatus.SUCCESS;
+            return status != PatcherStatus.Success;
         }
 
         public void GetPatchManifest()
@@ -47,16 +47,16 @@ namespace Tunetoon.Patcher
                 // Windows specific
                 string json = httpClient.GetStringAsync(WinManifest).Result;
                 var manifest = JsonConvert.DeserializeObject<ClashManifest>(json);
-                patchManifest.AddRange(manifest.files);
+                patchManifest.AddRange(manifest.Files);
 
                 // Resources
                 json = httpClient.GetStringAsync(ResourceManifest).Result;
                 manifest = JsonConvert.DeserializeObject<ClashManifest>(json);
-                patchManifest.AddRange(manifest.files);
+                patchManifest.AddRange(manifest.Files);
             }
             catch
             {
-                status = PatcherStatus.PATCH_MANIFEST_FAILURE;
+                status = PatcherStatus.PatchManifestFailure;
             }
         }
 
@@ -89,7 +89,7 @@ namespace Tunetoon.Patcher
         {
             string fileToDownload = GamePatchUtils.GetSha1HashString(file.FilePath);
 
-            string url = updateUrl + fileToDownload;
+            string url = UpdateUrl + fileToDownload;
             string downloadedFilePath = config.ClashPath + fileToDownload;
             string extractedFilePath = downloadedFilePath + "~";
 
@@ -98,21 +98,21 @@ namespace Tunetoon.Patcher
             if (downloadStatus != 0)
             {
                 File.Delete(downloadedFilePath);
-                status = PatcherStatus.FILE_DOWNLOAD_FAILURE;
+                status = PatcherStatus.FileDownloadFailure;
                 cts.Cancel();
                 return;
             }
 
-            if (!GamePatchUtils.FileIsCorrect(downloadedFilePath, file.Compressed_sha1))
+            if (!GamePatchUtils.FileIsCorrect(downloadedFilePath, file.CompressedSha1))
             {
-                status = PatcherStatus.FILE_DOWNLOAD_FAILURE;
+                status = PatcherStatus.FileDownloadFailure;
                 cts.Cancel();
                 return;
             }
 
             if (GamePatchUtils.Extract(downloadedFilePath, extractedFilePath, "gzip") != 0)
             {
-                status = PatcherStatus.FILE_DOWNLOAD_FAILURE;
+                status = PatcherStatus.FileDownloadFailure;
                 cts.Cancel();
                 return;
             }
@@ -124,7 +124,7 @@ namespace Tunetoon.Patcher
                 return;
             }
 
-            status = PatcherStatus.FILE_DOWNLOAD_FAILURE;
+            status = PatcherStatus.FileDownloadFailure;
             cts.Cancel();
         }
 

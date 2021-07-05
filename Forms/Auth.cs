@@ -13,23 +13,23 @@ namespace Tunetoon.Forms
 
         public event CancelledHandler IsClosed;
 
-        private dynamic AccountsToAuth;
+        private dynamic accountsToAuth;
 
         public Auth(dynamic accountsToAuth)
         {
-            AccountsToAuth = accountsToAuth;
+            this.accountsToAuth = accountsToAuth;
 
             InitializeComponent();
 
             AuthGrid.AutoGenerateColumns = false;
-            AuthGrid.DataSource = AccountsToAuth;
+            AuthGrid.DataSource = this.accountsToAuth;
         }
 
         private void Auth2Button_Click(object sender, EventArgs e)
         {
             AuthGrid.CurrentCell = null;
 
-            AuthTokensEntered(AccountsToAuth);
+            AuthTokensEntered(accountsToAuth);
             Dispose();
         }
 
@@ -54,11 +54,11 @@ namespace Tunetoon.Forms
             {
                 if (Convert.ToBoolean(AuthGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value))
                 {
-                    AccountsToAuth.RemoveAt(e.RowIndex);
+                    accountsToAuth.RemoveAt(e.RowIndex);
                     AuthGrid.DataSource = null;
-                    AuthGrid.DataSource = AccountsToAuth;
+                    AuthGrid.DataSource = accountsToAuth;
                 }
-                if (AccountsToAuth.Count == 0)
+                if (accountsToAuth.Count == 0)
                 {
                     Dispose();
                 }

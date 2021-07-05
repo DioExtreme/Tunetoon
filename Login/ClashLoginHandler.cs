@@ -33,7 +33,7 @@ namespace Tunetoon.Login
             {
                 AccountsToTwoStepAuth.Add(account);
             }
-            else if (account.LoginResult.bad_token)
+            else if (account.LoginResult.BadToken)
             {
                 account.Authorized = false;
                 account.LoginToken = null;

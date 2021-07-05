@@ -48,11 +48,11 @@ namespace Tunetoon.Forms
             var clashAuthorization = new ClashAuthorization();
             clashAuthorization.AddAccount(account);
 
-            if (clashAuthorization.lastReason != 0)
+            if (clashAuthorization.LastReason != 0)
             {
                 DoneButton.Text = "Done";
                 DoneButton.Enabled = true;
-                MessageBox.Show(clashAuthorization.lastMessage, "Server response", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(clashAuthorization.LastMessage, "Server response", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 

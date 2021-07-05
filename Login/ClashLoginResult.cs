@@ -1,4 +1,6 @@
-﻿namespace Tunetoon.Login
+﻿using Newtonsoft.Json;
+
+namespace Tunetoon.Login
 {
     public class ClashLoginResult : ILoginResult
     {
@@ -6,7 +8,9 @@
         public bool Toonstep;
         public int Reason;
         public string Token;
-        public bool bad_token;
+
+        [JsonProperty(PropertyName = "bad_token")]
+        public bool BadToken;
 
         public string GameServer => "gs.corporateclash.net";
 

@@ -6,16 +6,16 @@ namespace Tunetoon.Forms
 {
     public partial class Options : Form
     {
-        private Launcher LauncherWnd;
-        private Config Config;
+        private Launcher launcherWnd;
+        private Config config;
         private bool endSelectionChecked;
 
         private List<string> clashDistricts = new List<string>();
 
-        public Options(Launcher LauncherWnd, Config Config)
+        public Options(Launcher launcherWnd, Config config)
         {
-            this.LauncherWnd = LauncherWnd;
-            this.Config = Config;
+            this.launcherWnd = launcherWnd;
+            this.config = config;
 
             clashDistricts.Add("Anvil Acres");
             clashDistricts.Add("Cupcake Cove");
@@ -33,13 +33,13 @@ namespace Tunetoon.Forms
 
         private void Options_Load(object sender, EventArgs e)
         {
-            RewrittenPath.Text = Config.RewrittenPath;
-            ClashPath.Text = Config.ClashPath;
+            RewrittenPath.Text = config.RewrittenPath;
+            ClashPath.Text = config.ClashPath;
 
-            SkipUpdatesCheckBox.Checked = Config.SkipUpdates;
-            SelectionCheckBox.Checked = endSelectionChecked = Config.SelectEndGames;
-            GlobalEndCheckBox.Checked = Config.GlobalEndAll;
-            ClashDistrictCheckBox.Checked = DistrictComboBox.Enabled = Config.ClashDistrict != null;
+            SkipUpdatesCheckBox.Checked = config.SkipUpdates;
+            SelectionCheckBox.Checked = endSelectionChecked = config.SelectEndGames;
+            GlobalEndCheckBox.Checked = config.GlobalEndAll;
+            ClashDistrictCheckBox.Checked = DistrictComboBox.Enabled = config.ClashDistrict != null;
         }
 
         private void RewrittenPathButton_Click(object sender, EventArgs e)
@@ -71,17 +71,17 @@ namespace Tunetoon.Forms
 
         private void OkayButton_Click(object sender, EventArgs e)
         {
-            Config.RewrittenPath = RewrittenPath.Text;
-            Config.ClashPath = ClashPath.Text;
-            Config.SkipUpdates = SkipUpdatesCheckBox.Checked;
-            Config.SelectEndGames = SelectionCheckBox.Checked;
-            Config.GlobalEndAll = GlobalEndCheckBox.Checked;
+            config.RewrittenPath = RewrittenPath.Text;
+            config.ClashPath = ClashPath.Text;
+            config.SkipUpdates = SkipUpdatesCheckBox.Checked;
+            config.SelectEndGames = SelectionCheckBox.Checked;
+            config.GlobalEndAll = GlobalEndCheckBox.Checked;
 
-            Config.ClashDistrict = ClashDistrictCheckBox.Checked ? DistrictComboBox.SelectedItem.ToString() : null;
+            config.ClashDistrict = ClashDistrictCheckBox.Checked ? DistrictComboBox.SelectedItem.ToString() : null;
  
-            if (endSelectionChecked != Config.SelectEndGames)
+            if (endSelectionChecked != config.SelectEndGames)
             {
-                LauncherWnd.SelectionOptionAltered();
+                launcherWnd.SelectionOptionAltered();
             }
 
             Dispose();

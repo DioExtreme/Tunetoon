@@ -50,9 +50,9 @@ namespace Tunetoon {
             return sb.ToString();
         }
 
-        public static void Decompress(string bz2file, string localFile, string type)
+        public static void Decompress(string bz2File, string localFile, string type)
         {
-            using (var fs = new FileStream(bz2file, FileMode.Open, FileAccess.Read))
+            using (var fs = new FileStream(bz2File, FileMode.Open, FileAccess.Read))
             using (var fsOut = File.Create(localFile))
             {
                 if (type == "bzip2")
@@ -97,7 +97,7 @@ namespace Tunetoon {
 
         public static void Patch(string patchFile, string localFile)
         {
-            BSPatch.Apply(localFile, patchFile);
+            BsPatch.Apply(localFile, patchFile);
         }
     }
 }

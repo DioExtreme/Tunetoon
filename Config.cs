@@ -3,14 +3,14 @@ using static System.Environment;
 
 namespace Tunetoon
 {
-     public enum Server { REWRITTEN, CLASH }
+     public enum Server { Rewritten, Clash }
 
      public class Config
      {  
         [JsonIgnore]
         public const int LauncherVersion = 60;
 
-        public Server GameServer = Server.REWRITTEN;
+        public Server GameServer = Server.Rewritten;
 
         public string RewrittenPath { get; set; } = GetFolderPath(SpecialFolder.ProgramFilesX86) + "\\Toontown Rewritten\\";
 

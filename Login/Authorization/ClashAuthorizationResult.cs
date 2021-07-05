@@ -1,12 +1,16 @@
-﻿namespace Tunetoon.Login.Authorization
+﻿using Newtonsoft.Json;
+
+namespace Tunetoon.Login.Authorization
 {
     public class ClashAuthorizationResult
     {
-        public bool status;
-        public int reason;
-        public string friendlyreason;
-        public string message;
-        public string token;
-        public bool bad_token;
+        public bool Status;
+        public int Reason;
+        public string Friendlyreason;
+        public string Message;
+        public string Token;
+
+        [JsonProperty(PropertyName = "bad_token")]
+        public bool BadToken;
     }
 }

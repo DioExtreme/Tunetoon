@@ -13,11 +13,11 @@ namespace Tunetoon
     {
         private Random random = new Random();
 
-        private HttpClient httpClient = Program.httpClient;
-        private const string clashBaseAddress = "https://corporateclash.net";
+        private HttpClient httpClient = Program.HttpClient;
+        private const string ClashBaseAddress = "https://corporateclash.net";
 
-        public int lastReason;
-        public string lastMessage;
+        public int LastReason;
+        public string LastMessage;
 
         private string RandomString(int length)
         {
@@ -41,7 +41,7 @@ namespace Tunetoon
             string friendly = "Tunetoon-" + RandomString(16);
             var data = new Dictionary<string, string>();
 
-            using (var request = new HttpRequestMessage(HttpMethod.Post, clashBaseAddress +  "/api/launcher/v1/register"))
+            using (var request = new HttpRequestMessage(HttpMethod.Post, ClashBaseAddress +  "/api/launcher/v1/register"))
             {
                 data.Add("username", account.Username);
                 data.Add("password", account.Password);
@@ -56,24 +56,24 @@ namespace Tunetoon
 
                 var authObject = JsonConvert.DeserializeObject<ClashAuthorizationResult>(responseString);
 
-                if (authObject.status)
+                if (authObject.Status)
                 {
                     account.Authorized = true;
-                    account.LoginToken = authObject.token;
+                    account.LoginToken = authObject.Token;
                 }
                 else
                 {
                     account.Authorized = false;
                     account.LoginToken = null;
-                    lastMessage = authObject.message;
+                    LastMessage = authObject.Message;
                 }
-                lastReason = authObject.reason;
+                LastReason = authObject.Reason;
             }
         }
 
         public void LoginAccount(ClashAccount account)
         {
-            using (var request = new HttpRequestMessage(HttpMethod.Post, clashBaseAddress + "/api/launcher/v1/login"))
+            using (var request = new HttpRequestMessage(HttpMethod.Post, ClashBaseAddress + "/api/launcher/v1/login"))
             {
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", account.LoginToken);
                 request.Headers.Add("x-realm", "production");
@@ -89,7 +89,7 @@ namespace Tunetoon
         // Provided for reference
         public void GetMetadata(ClashAccount account)
         {
-            using (var request = new HttpRequestMessage(HttpMethod.Get, clashBaseAddress + "/api/launcher/v1/metadata"))
+            using (var request = new HttpRequestMessage(HttpMethod.Get, ClashBaseAddress + "/api/launcher/v1/metadata"))
             {
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", account.LoginToken);
 
@@ -100,7 +100,7 @@ namespace Tunetoon
 
         public void RemoveAccount(ClashAccount account)
         {
-            using (var request = new HttpRequestMessage(HttpMethod.Post, clashBaseAddress +  "/api/launcher/v1/revoke_self"))
+            using (var request = new HttpRequestMessage(HttpMethod.Post, ClashBaseAddress +  "/api/launcher/v1/revoke_self"))
             {
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", account.LoginToken);
 

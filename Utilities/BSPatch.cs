@@ -32,9 +32,9 @@ namespace Tunetoon.Utilities
 	IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 	POSSIBILITY OF SUCH DAMAGE.
     */
-    internal static class BSPatch
+    internal static class BsPatch
     {
-        private const long BSDIFF40 = 3473478480300364610L;
+        private const long Bsdiff40 = 3473478480300364610L;
         private const int HeaderSize = 32;
 
         private static int ReadFileOffset(this BinaryReader binaryReader)
@@ -72,15 +72,15 @@ namespace Tunetoon.Utilities
 			*/
 
             long controlLength, diffLength, newSize;
-            Stream openPatchStream() => new FileStream(patchFile, FileMode.Open, FileAccess.Read);
+            Stream OpenPatchStream() => new FileStream(patchFile, FileMode.Open, FileAccess.Read);
 
             // read header
-            using (Stream patchStream = openPatchStream())
+            using (Stream patchStream = OpenPatchStream())
             using (BinaryReader binaryReader = new BinaryReader(patchStream))
             {
                 // check for appropriate magic
                 long signature = binaryReader.ReadInt64();
-                if (signature != BSDIFF40)
+                if (signature != Bsdiff40)
                 {
                     return;
                 }
@@ -98,9 +98,9 @@ namespace Tunetoon.Utilities
             byte[] newData;
             byte[] oldData;
 
-            using (var controlStream = openPatchStream())
-            using (var diffStream = openPatchStream())
-            using (var extraStream = openPatchStream())
+            using (var controlStream = OpenPatchStream())
+            using (var diffStream = OpenPatchStream())
+            using (var extraStream = OpenPatchStream())
             {
                 // seek streams
                 controlStream.Seek(HeaderSize, SeekOrigin.Current);
