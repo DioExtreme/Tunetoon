@@ -1,13 +1,9 @@
-﻿using Newtonsoft.Json;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using Tunetoon.Accounts;
+﻿using Tunetoon.Accounts;
 
 namespace Tunetoon.Login
 {
     public class ClashLoginHandler : LoginHandlerBase<ClashAccount>
     {
-        private HttpClient httpClient = Program.httpClient;
         private ClashAuthorization clashAuthorization = new ClashAuthorization();
 
         public override void GetAuthResponse(ClashAccount account)
