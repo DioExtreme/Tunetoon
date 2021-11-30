@@ -25,7 +25,7 @@ namespace Tunetoon.Game
             {
                 var gameProcess = new Process();
                 SetupBaseEnvVariables(account.LoginResult, gameProcess);
-                StartGame(account, gameProcess, config.RewrittenPath, "TTREngine.exe");
+                StartGame(account, gameProcess, config.RewrittenPath, "TTREngine64.exe");
             }
         }
     }
