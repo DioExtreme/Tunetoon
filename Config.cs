@@ -8,7 +8,7 @@ namespace Tunetoon
      public class Config
      {  
         [JsonIgnore]
-        public const int LauncherVersion = 60;
+        public const int LauncherVersion = 63;
 
         public Server GameServer = Server.Rewritten;
 
