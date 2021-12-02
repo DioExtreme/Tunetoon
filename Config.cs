@@ -12,6 +12,8 @@ namespace Tunetoon
 
         public Server GameServer = Server.Rewritten;
 
+        public bool EncryptAccounts { get; set;} = true;
+
         public string RewrittenPath { get; set; } = GetFolderPath(SpecialFolder.ProgramFilesX86) + "\\Toontown Rewritten\\";
 
         public string ClashPath { get; set; } = GetFolderPath(SpecialFolder.LocalApplicationData) + "\\Corporate Clash\\";

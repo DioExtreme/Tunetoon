@@ -41,14 +41,14 @@
             this.SkipUpdatesCheckBox = new System.Windows.Forms.CheckBox();
             this.ClashDistrictCheckBox = new System.Windows.Forms.CheckBox();
             this.DistrictComboBox = new System.Windows.Forms.ComboBox();
-            this.Help = new System.Windows.Forms.Button();
+            this.EncryptAccsCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // OkayButton
             // 
-            this.OkayButton.Location = new System.Drawing.Point(426, 198);
+            this.OkayButton.Location = new System.Drawing.Point(12, 198);
             this.OkayButton.Name = "OkayButton";
-            this.OkayButton.Size = new System.Drawing.Size(75, 23);
+            this.OkayButton.Size = new System.Drawing.Size(483, 23);
             this.OkayButton.TabIndex = 0;
             this.OkayButton.Text = "Save";
             this.OkayButton.UseVisualStyleBackColor = true;
@@ -155,21 +155,22 @@
             this.DistrictComboBox.Size = new System.Drawing.Size(160, 21);
             this.DistrictComboBox.TabIndex = 16;
             // 
-            // Help
+            // EncryptAccsCheckBox
             // 
-            this.Help.Location = new System.Drawing.Point(12, 198);
-            this.Help.Name = "Help";
-            this.Help.Size = new System.Drawing.Size(75, 23);
-            this.Help.TabIndex = 2;
-            this.Help.Text = "Help!";
-            this.Help.UseVisualStyleBackColor = true;
-            this.Help.Click += new System.EventHandler(this.Help_Click);
+            this.EncryptAccsCheckBox.AutoSize = true;
+            this.EncryptAccsCheckBox.Location = new System.Drawing.Point(341, 164);
+            this.EncryptAccsCheckBox.Name = "EncryptAccsCheckBox";
+            this.EncryptAccsCheckBox.Size = new System.Drawing.Size(109, 17);
+            this.EncryptAccsCheckBox.TabIndex = 17;
+            this.EncryptAccsCheckBox.Text = "Encrypt accounts";
+            this.EncryptAccsCheckBox.UseVisualStyleBackColor = true;
             // 
             // Options
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(508, 228);
+            this.Controls.Add(this.EncryptAccsCheckBox);
             this.Controls.Add(this.DistrictComboBox);
             this.Controls.Add(this.ClashDistrictCheckBox);
             this.Controls.Add(this.SkipUpdatesCheckBox);
@@ -181,7 +182,6 @@
             this.Controls.Add(this.SelectionCheckBox);
             this.Controls.Add(this.ClashLabel);
             this.Controls.Add(this.RewrittenLabel);
-            this.Controls.Add(this.Help);
             this.Controls.Add(this.OkayButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -211,6 +211,6 @@
         private System.Windows.Forms.CheckBox SkipUpdatesCheckBox;
         private System.Windows.Forms.CheckBox ClashDistrictCheckBox;
         private System.Windows.Forms.ComboBox DistrictComboBox;
-        private System.Windows.Forms.Button Help;
+        private System.Windows.Forms.CheckBox EncryptAccsCheckBox;
     }
 }

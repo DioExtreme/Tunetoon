@@ -50,7 +50,6 @@ namespace Tunetoon.Forms
         {
             bindingSource.ListChanged += BindingSource_ListChanged;
 
-            DataProtection.LoadEntropy();
             config = dataHandler.LoadConfig("Config.json");
 
             rewrittenPatcher = new RewrittenPatcher(config);
@@ -59,8 +58,18 @@ namespace Tunetoon.Forms
             clashGameHandler = new ClashGameHandler(config);
 
             dataHandler.LoadClashIngameToons(config);
-            dataHandler.LoadAccounts(ref rewrittenAccountList, "AccListRewritten.nully");
-            dataHandler.LoadAccounts(ref clashAccountList, "AccListClash.nully");
+
+            if (config.EncryptAccounts)
+            {
+                DataProtection.LoadEntropy();
+                dataHandler.LoadAccounts(ref rewrittenAccountList, "AccListRewritten.nully");
+                dataHandler.LoadAccounts(ref clashAccountList, "AccListClash.nully");
+            }
+            else
+            {
+                rewrittenAccountList = dataHandler.Deserialize<AccountList<RewrittenAccount>>("AccListRewritten.nully");
+                clashAccountList = dataHandler.Deserialize<AccountList<ClashAccount>>("AccListClash.nully");
+            }
 
             InitializeComponent();
 
@@ -349,11 +358,19 @@ namespace Tunetoon.Forms
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            DataProtection.MakeEntropy();
-
             dataHandler.SaveConfig(config, "Config.json");
-            dataHandler.SaveAccounts(rewrittenAccountList, "AccListRewritten.nully");
-            dataHandler.SaveAccounts(clashAccountList, "AccListClash.nully");
+
+            if (config.EncryptAccounts)
+            {
+                DataProtection.MakeEntropy();
+                dataHandler.SaveAccounts(rewrittenAccountList, "AccListRewritten.nully");
+                dataHandler.SaveAccounts(clashAccountList, "AccListClash.nully");
+            }
+            else
+            {
+                dataHandler.SaveSerialized(rewrittenAccountList, "AccListRewritten.nully");
+                dataHandler.SaveSerialized(clashAccountList, "AccListClash.nully");
+            }
 
             base.OnFormClosing(e);
         }

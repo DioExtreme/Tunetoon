@@ -39,6 +39,8 @@ namespace Tunetoon.Forms
             SkipUpdatesCheckBox.Checked = config.SkipUpdates;
             SelectionCheckBox.Checked = endSelectionChecked = config.SelectEndGames;
             GlobalEndCheckBox.Checked = config.GlobalEndAll;
+            EncryptAccsCheckBox.Checked = config.EncryptAccounts;
+
             ClashDistrictCheckBox.Checked = DistrictComboBox.Enabled = config.ClashDistrict != null;
         }
 
@@ -73,9 +75,11 @@ namespace Tunetoon.Forms
         {
             config.RewrittenPath = RewrittenPath.Text;
             config.ClashPath = ClashPath.Text;
+
             config.SkipUpdates = SkipUpdatesCheckBox.Checked;
             config.SelectEndGames = SelectionCheckBox.Checked;
             config.GlobalEndAll = GlobalEndCheckBox.Checked;
+            config.EncryptAccounts = EncryptAccsCheckBox.Checked;
 
             config.ClashDistrict = ClashDistrictCheckBox.Checked ? DistrictComboBox.SelectedItem.ToString() : null;
  
@@ -85,12 +89,6 @@ namespace Tunetoon.Forms
             }
 
             Dispose();
-        }
-
-        private void Help_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("A Discord handle would be here but it's removed for the open source release.",
-                "Discord", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void ClashDistrictCheckBox_CheckedChanged(object sender, EventArgs e)
