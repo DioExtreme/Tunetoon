@@ -152,8 +152,20 @@ namespace Tunetoon.Patcher
 
             foreach (var file in filesNeeded)
             {
-                string localFilePath = gamePath + file.FilePath; 
-                File.Delete(localFilePath);
+                string localFilePath = gamePath + file.FilePath;
+                string localDirPath = Path.GetDirectoryName(localFilePath);
+
+                if (Directory.Exists(localDirPath))
+                {
+                    if (File.Exists(localFilePath))
+                    {
+                        File.Delete(localFilePath);
+                    }
+                }
+                else
+                {
+                    Directory.CreateDirectory(localDirPath);
+                }
                 File.Move(gamePath + file.FileName, gamePath + file.FilePath);
                 patchProgress.FileProcessed(progress);
             } 
