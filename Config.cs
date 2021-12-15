@@ -7,9 +7,6 @@ namespace Tunetoon
 
      public class Config
      {  
-        [JsonIgnore]
-        public const int LauncherVersion = 63;
-
         public Server GameServer = Server.Rewritten;
 
         public bool EncryptAccounts { get; set;} = true;
