@@ -41,7 +41,17 @@ namespace Tunetoon.Forms
             GlobalEndCheckBox.Checked = config.GlobalEndAll;
             EncryptAccsCheckBox.Checked = config.EncryptAccounts;
 
-            ClashDistrictCheckBox.Checked = DistrictComboBox.Enabled = config.ClashDistrict != null;
+            if (config.ClashDistrict != null)
+            {
+                ClashDistrictCheckBox.Checked = true;
+                DistrictComboBox.Enabled = true;
+                DistrictComboBox.SelectedIndex = clashDistricts.IndexOf(config.ClashDistrict);
+            }
+            else
+            {
+                ClashDistrictCheckBox.Checked = false;
+                DistrictComboBox.Enabled = false;
+            }
         }
 
         private void RewrittenPathButton_Click(object sender, EventArgs e)
