@@ -45,7 +45,8 @@ namespace Tunetoon.Forms
             this.untickAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moveRowsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.LoginButton = new System.Windows.Forms.Button();
-            this.accountGrid = new AccountGrid();
+            this.launchMultitoonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.accountGrid = new Tunetoon.Grid.AccountGrid();
             this.Login = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Toon = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ToonSlots = new System.Windows.Forms.DataGridViewComboBoxColumn();
@@ -65,7 +66,8 @@ namespace Tunetoon.Forms
             this.endSelectedMenuItem,
             this.endAllMenuItem,
             this.untickAllMenuItem,
-            this.moveRowsMenuItem});
+            this.moveRowsMenuItem,
+            this.launchMultitoonToolStripMenuItem});
             this.TopMenu.Location = new System.Drawing.Point(0, 0);
             this.TopMenu.Name = "TopMenu";
             this.TopMenu.Size = new System.Drawing.Size(534, 24);
@@ -155,7 +157,14 @@ namespace Tunetoon.Forms
             this.LoginButton.UseVisualStyleBackColor = true;
             this.LoginButton.Click += new System.EventHandler(this.LoginButton_Click);
             // 
-            // AccountGrid
+            // launchMultitoonToolStripMenuItem
+            // 
+            this.launchMultitoonToolStripMenuItem.Name = "launchMultitoonToolStripMenuItem";
+            this.launchMultitoonToolStripMenuItem.Size = new System.Drawing.Size(114, 20);
+            this.launchMultitoonToolStripMenuItem.Text = "Launch Multitoon";
+            this.launchMultitoonToolStripMenuItem.Click += new System.EventHandler(this.LaunchMultitoon_Click);
+            // 
+            // accountGrid
             // 
             this.accountGrid.AllowDrop = true;
             this.accountGrid.AllowUserToResizeColumns = false;
@@ -255,5 +264,6 @@ namespace Tunetoon.Forms
         private DataGridViewComboBoxColumn ToonSlots;
         private DataGridViewCheckBoxColumn End;
         private ToolStripMenuItem moveRowsMenuItem;
+        private ToolStripMenuItem launchMultitoonToolStripMenuItem;
     }
 }

@@ -25,5 +25,9 @@ namespace Tunetoon
         public bool SelectEndGames { get; set; }
 
         public bool GlobalEndAll { get; set; }
+
+        public string MultiPath { get; set; }
+
+        public bool LaunchMultitoonWhenPlay { get; set; }
      }
 }

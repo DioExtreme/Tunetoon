@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Text;
@@ -197,6 +198,17 @@ namespace Tunetoon.Forms
 
         private async void LoginButton_Click(object sender, EventArgs e)
         {
+            // Handles launching of multitoon
+            if (config.LaunchMultitoonWhenPlay && File.Exists(config.MultiPath))
+            {
+                Process[] procs = Process.GetProcessesByName("ToontownMulticontroller");
+
+                if (procs.Length == 0)
+                {
+                    LaunchMultitoon();
+                }
+            }
+
             // Workarounds some ComboBoxCell glitch
             // where the selection is not saved
             accountGrid.ClearGridSelections();
@@ -566,6 +578,24 @@ namespace Tunetoon.Forms
             accountGrid.MoveMode = moveRowsMenuItem.Checked = !moveRowsMenuItem.Checked;
 
             accountGrid.ClearGridSelections();
+        }
+
+        private void LaunchMultitoon_Click(object sender, EventArgs e)
+        {
+            LaunchMultitoon();
+        }
+
+        private void LaunchMultitoon()
+        {
+            if (!File.Exists(config.MultiPath))
+            {
+                MessageBox.Show("Multitoon directory missing.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            else
+            {
+                Process.Start(config.MultiPath);
+            }
         }
     }
 }

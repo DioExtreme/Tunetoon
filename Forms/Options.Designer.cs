@@ -42,11 +42,15 @@
             this.ClashDistrictCheckBox = new System.Windows.Forms.CheckBox();
             this.DistrictComboBox = new System.Windows.Forms.ComboBox();
             this.EncryptAccsCheckBox = new System.Windows.Forms.CheckBox();
+            this.MultitoonPathButton = new System.Windows.Forms.Button();
+            this.MultitoonPath = new System.Windows.Forms.TextBox();
+            this.MultitoonLabel = new System.Windows.Forms.Label();
+            this.LaunchMultitoonCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // OkayButton
             // 
-            this.OkayButton.Location = new System.Drawing.Point(12, 198);
+            this.OkayButton.Location = new System.Drawing.Point(12, 267);
             this.OkayButton.Name = "OkayButton";
             this.OkayButton.Size = new System.Drawing.Size(483, 23);
             this.OkayButton.TabIndex = 0;
@@ -75,7 +79,7 @@
             // SelectionCheckBox
             // 
             this.SelectionCheckBox.AutoSize = true;
-            this.SelectionCheckBox.Location = new System.Drawing.Point(341, 118);
+            this.SelectionCheckBox.Location = new System.Drawing.Point(341, 167);
             this.SelectionCheckBox.Name = "SelectionCheckBox";
             this.SelectionCheckBox.Size = new System.Drawing.Size(104, 17);
             this.SelectionCheckBox.TabIndex = 5;
@@ -85,7 +89,7 @@
             // GlobalEndCheckBox
             // 
             this.GlobalEndCheckBox.AutoSize = true;
-            this.GlobalEndCheckBox.Location = new System.Drawing.Point(341, 141);
+            this.GlobalEndCheckBox.Location = new System.Drawing.Point(341, 190);
             this.GlobalEndCheckBox.Name = "GlobalEndCheckBox";
             this.GlobalEndCheckBox.Size = new System.Drawing.Size(160, 17);
             this.GlobalEndCheckBox.TabIndex = 6;
@@ -129,7 +133,7 @@
             // SkipUpdatesCheckBox
             // 
             this.SkipUpdatesCheckBox.AutoSize = true;
-            this.SkipUpdatesCheckBox.Location = new System.Drawing.Point(15, 118);
+            this.SkipUpdatesCheckBox.Location = new System.Drawing.Point(15, 167);
             this.SkipUpdatesCheckBox.Name = "SkipUpdatesCheckBox";
             this.SkipUpdatesCheckBox.Size = new System.Drawing.Size(117, 17);
             this.SkipUpdatesCheckBox.TabIndex = 14;
@@ -139,7 +143,7 @@
             // ClashDistrictCheckBox
             // 
             this.ClashDistrictCheckBox.AutoSize = true;
-            this.ClashDistrictCheckBox.Location = new System.Drawing.Point(15, 141);
+            this.ClashDistrictCheckBox.Location = new System.Drawing.Point(15, 190);
             this.ClashDistrictCheckBox.Name = "ClashDistrictCheckBox";
             this.ClashDistrictCheckBox.Size = new System.Drawing.Size(172, 17);
             this.ClashDistrictCheckBox.TabIndex = 15;
@@ -150,7 +154,7 @@
             // DistrictComboBox
             // 
             this.DistrictComboBox.FormattingEnabled = true;
-            this.DistrictComboBox.Location = new System.Drawing.Point(15, 164);
+            this.DistrictComboBox.Location = new System.Drawing.Point(15, 213);
             this.DistrictComboBox.Name = "DistrictComboBox";
             this.DistrictComboBox.Size = new System.Drawing.Size(160, 21);
             this.DistrictComboBox.TabIndex = 16;
@@ -158,18 +162,58 @@
             // EncryptAccsCheckBox
             // 
             this.EncryptAccsCheckBox.AutoSize = true;
-            this.EncryptAccsCheckBox.Location = new System.Drawing.Point(341, 164);
+            this.EncryptAccsCheckBox.Location = new System.Drawing.Point(341, 213);
             this.EncryptAccsCheckBox.Name = "EncryptAccsCheckBox";
             this.EncryptAccsCheckBox.Size = new System.Drawing.Size(109, 17);
             this.EncryptAccsCheckBox.TabIndex = 17;
             this.EncryptAccsCheckBox.Text = "Encrypt accounts";
             this.EncryptAccsCheckBox.UseVisualStyleBackColor = true;
             // 
+            // MultitoonPathButton
+            // 
+            this.MultitoonPathButton.Location = new System.Drawing.Point(462, 130);
+            this.MultitoonPathButton.Name = "MultitoonPathButton";
+            this.MultitoonPathButton.Size = new System.Drawing.Size(33, 21);
+            this.MultitoonPathButton.TabIndex = 20;
+            this.MultitoonPathButton.Text = "...";
+            this.MultitoonPathButton.UseVisualStyleBackColor = true;
+            this.MultitoonPathButton.Click += new System.EventHandler(this.MultitoonPathButton_Click);
+            // 
+            // MultitoonPath
+            // 
+            this.MultitoonPath.Location = new System.Drawing.Point(12, 130);
+            this.MultitoonPath.Name = "MultitoonPath";
+            this.MultitoonPath.Size = new System.Drawing.Size(444, 20);
+            this.MultitoonPath.TabIndex = 19;
+            // 
+            // MultitoonLabel
+            // 
+            this.MultitoonLabel.AutoSize = true;
+            this.MultitoonLabel.Location = new System.Drawing.Point(9, 114);
+            this.MultitoonLabel.Name = "MultitoonLabel";
+            this.MultitoonLabel.Size = new System.Drawing.Size(78, 13);
+            this.MultitoonLabel.TabIndex = 18;
+            this.MultitoonLabel.Text = "Multitoon Path:";
+            // 
+            // LaunchMultitoonCheckBox
+            // 
+            this.LaunchMultitoonCheckBox.AutoSize = true;
+            this.LaunchMultitoonCheckBox.Location = new System.Drawing.Point(15, 240);
+            this.LaunchMultitoonCheckBox.Name = "LaunchMultitoonCheckBox";
+            this.LaunchMultitoonCheckBox.Size = new System.Drawing.Size(196, 17);
+            this.LaunchMultitoonCheckBox.TabIndex = 21;
+            this.LaunchMultitoonCheckBox.Text = "Launch multitoon when Play clicked";
+            this.LaunchMultitoonCheckBox.UseVisualStyleBackColor = true;
+            // 
             // Options
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(508, 228);
+            this.ClientSize = new System.Drawing.Size(508, 313);
+            this.Controls.Add(this.LaunchMultitoonCheckBox);
+            this.Controls.Add(this.MultitoonPathButton);
+            this.Controls.Add(this.MultitoonPath);
+            this.Controls.Add(this.MultitoonLabel);
             this.Controls.Add(this.EncryptAccsCheckBox);
             this.Controls.Add(this.DistrictComboBox);
             this.Controls.Add(this.ClashDistrictCheckBox);
@@ -212,5 +256,9 @@
         private System.Windows.Forms.CheckBox ClashDistrictCheckBox;
         private System.Windows.Forms.ComboBox DistrictComboBox;
         private System.Windows.Forms.CheckBox EncryptAccsCheckBox;
+        private System.Windows.Forms.Button MultitoonPathButton;
+        private System.Windows.Forms.TextBox MultitoonPath;
+        private System.Windows.Forms.Label MultitoonLabel;
+        private System.Windows.Forms.CheckBox LaunchMultitoonCheckBox;
     }
 }

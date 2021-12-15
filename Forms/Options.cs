@@ -35,11 +35,15 @@ namespace Tunetoon.Forms
         {
             RewrittenPath.Text = config.RewrittenPath;
             ClashPath.Text = config.ClashPath;
+            MultitoonPath.Text = config.MultiPath;
 
             SkipUpdatesCheckBox.Checked = config.SkipUpdates;
             SelectionCheckBox.Checked = endSelectionChecked = config.SelectEndGames;
             GlobalEndCheckBox.Checked = config.GlobalEndAll;
             EncryptAccsCheckBox.Checked = config.EncryptAccounts;
+            // Fixes annoying oversight with clash district not being loaded in options menu
+            DistrictComboBox.SelectedIndex = clashDistricts.IndexOf(config.ClashDistrict);
+            LaunchMultitoonCheckBox.Checked = config.LaunchMultitoonWhenPlay;
 
             ClashDistrictCheckBox.Checked = DistrictComboBox.Enabled = config.ClashDistrict != null;
         }
@@ -75,14 +79,16 @@ namespace Tunetoon.Forms
         {
             config.RewrittenPath = RewrittenPath.Text;
             config.ClashPath = ClashPath.Text;
+            config.MultiPath = MultitoonPath.Text;
 
             config.SkipUpdates = SkipUpdatesCheckBox.Checked;
             config.SelectEndGames = SelectionCheckBox.Checked;
             config.GlobalEndAll = GlobalEndCheckBox.Checked;
             config.EncryptAccounts = EncryptAccsCheckBox.Checked;
+            config.LaunchMultitoonWhenPlay = LaunchMultitoonCheckBox.Checked;
 
             config.ClashDistrict = ClashDistrictCheckBox.Checked ? DistrictComboBox.SelectedItem.ToString() : null;
- 
+
             if (endSelectionChecked != config.SelectEndGames)
             {
                 launcherWnd.SelectionOptionAltered();
@@ -94,6 +100,20 @@ namespace Tunetoon.Forms
         private void ClashDistrictCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             DistrictComboBox.Enabled = ClashDistrictCheckBox.Checked;
+        }
+
+        private void MultitoonPathButton_Click(object sender, EventArgs e)
+        {
+            var ofd = new OpenFileDialog();
+            ofd.Filter = "Executable files (*.exe)|*.exe|All files|*";
+            ofd.Title = "Select multitoon executable";
+            ofd.ShowDialog();
+
+            if (ofd.FileName != string.Empty)
+            {
+                MultitoonPath.Text = ofd.FileName;
+                MultitoonPath.ReadOnly = true;
+            }
         }
     }
 }
