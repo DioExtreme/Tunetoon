@@ -1,6 +1,5 @@
-﻿using ICSharpCode.SharpZipLib.BZip2;
-using System;
-using System.IO;
+﻿using System.IO;
+using Tunetoon.BZip2;
 
 namespace Tunetoon.Utilities
 {

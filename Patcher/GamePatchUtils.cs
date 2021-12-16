@@ -1,8 +1,8 @@
-﻿using ICSharpCode.SharpZipLib.BZip2;
-using ICSharpCode.SharpZipLib.GZip;
-using System.IO;
+﻿using System.IO;
+using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Text;
+using Tunetoon.BZip2;
 using Tunetoon.Utilities;
 
 namespace Tunetoon {
@@ -57,11 +57,14 @@ namespace Tunetoon {
             {
                 if (type == "bzip2")
                 {
-                    BZip2.Decompress(fs, fsOut, true);
+                    BZip2Decompressor.Decompress(fs, fsOut, true);
                 }
                 else if (type == "gzip")
                 {
-                    GZip.Decompress(fs, fsOut, true);
+                    using (var GZipDecompressor = new GZipStream(fs, CompressionMode.Decompress))
+                    {
+                        GZipDecompressor.CopyTo(fsOut);
+                    }
                 }
             }
         }
