@@ -13,9 +13,8 @@ namespace Tunetoon {
             try
             {
                 using (var fs = new FileStream(filepath, FileMode.Open, FileAccess.Read))
+                using (var sha1Cng = new SHA1Cng())
                 {
-                    // Not thread-safe so we need a new one every time
-                    var sha1Cng = new SHA1Cng();
                     return Hex(sha1Cng.ComputeHash(fs));
                 }
             }
@@ -29,9 +28,10 @@ namespace Tunetoon {
         {
             try
             {
-                // Not thread-safe so we need a new one every time
-                var sha1Cng = new SHA1Cng();
-                return Hex(sha1Cng.ComputeHash(Encoding.UTF8.GetBytes(str)));
+                using (var sha1Cng = new SHA1Cng())
+                {
+                    return Hex(sha1Cng.ComputeHash(Encoding.UTF8.GetBytes(str)));
+                }
             }
             catch
             {
