@@ -18,8 +18,6 @@ namespace Tunetoon.BZip2
 		private const int NO_RAND_PART_B_STATE = 6;
 		private const int NO_RAND_PART_C_STATE = 7;
 
-		private static readonly int VectorSize = System.Numerics.Vector<byte>.Count;
-
 		#endregion Constants
 
 		#region Instance Fields
@@ -712,24 +710,7 @@ namespace Tunetoon.BZip2
 					unzftab[seqToUnseq[tmp]]++;
 					ll8[last] = seqToUnseq[tmp];
 
-					var j = nextSym - 1;
-
-					// This is vectorized memory move. Going from the back, we're taking chunks of array
-					// and write them at the new location shifted by one. Since chunks are VectorSize long,
-					// at the end we have to move "tail" (or head actually) of the array using a plain loop.
-					// If System.Numerics.Vector API is not available, the plain loop is used to do the whole copying.
-
-					while(j >= VectorSize)
-					{
-						var arrayPart = new System.Numerics.Vector<byte>(yy, j - VectorSize);
-						arrayPart.CopyTo(yy, j - VectorSize + 1);
-						j -= VectorSize;
-					}
-
-					while (j > 0)
-					{
-						yy[j] = yy[--j];
-					}
+					Buffer.BlockCopy(yy, 0, yy, 1, nextSym - 1);
 
 					yy[0] = tmp;
 
