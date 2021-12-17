@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using static System.Environment;
+﻿using static System.Environment;
 
 namespace Tunetoon
 {
