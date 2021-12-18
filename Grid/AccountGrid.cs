@@ -160,7 +160,10 @@ namespace Tunetoon.Grid
             if (IndexNextToFirstSelection(row.Index))
             {
                 var firstSelectedAccount = Rows[firstSelectedAccountIndex].DataBoundItem as Account;
-                firstSelectedAccount.LoginWanted = true;
+                if (firstSelectedAccount != null)
+                {
+                    firstSelectedAccount.LoginWanted = true;
+                }
             }
 
             // If we are undoing a selection, the last selected account will remain checked.
@@ -168,7 +171,10 @@ namespace Tunetoon.Grid
             if (ReversingSelectDirection(row.Index))
             {
                 var lastSelectedAccount = Rows[lastSelectedAccountIndex].DataBoundItem as Account;
-                lastSelectedAccount.LoginWanted = false;
+                if (lastSelectedAccount != null)
+                {
+                    lastSelectedAccount.LoginWanted = false;
+                }
             }
 
             lastSelectedAccountIndex = row.Index;
