@@ -12,6 +12,9 @@ namespace Tunetoon.Grid
         public int RowIndexToDrop;
         public bool MoveMode;
 
+        private int firstSelectedAccountIndex = -1;
+        private int lastSelectedAccountIndex = -1;
+
         public AccountGrid()
         {
             DoubleBuffered = true;
@@ -21,6 +24,19 @@ namespace Tunetoon.Grid
         {
             ClearSelection();
             CurrentCell = null;
+            firstSelectedAccountIndex = -1;
+            lastSelectedAccountIndex = -1;
+        }
+
+        private bool IndexNextToFirstSelection(int index)
+        {
+            return index == firstSelectedAccountIndex + 1 || index == firstSelectedAccountIndex - 1;
+        }
+
+        private bool ReversingSelectDirection(int index)
+        {
+            return index == lastSelectedAccountIndex - 1 && index > firstSelectedAccountIndex ||
+                   index == lastSelectedAccountIndex + 1 && index < firstSelectedAccountIndex;
         }
 
         // Fixes CellValueChanged not triggering
@@ -117,50 +133,53 @@ namespace Tunetoon.Grid
             base.OnMouseMove(e);
         }
         
-
-        // Checks login for an selected account
+        // Changes login intent for a selected account
         protected override void OnSelectionChanged(EventArgs e)
         {
-            if (MoveMode)
+            if (MoveMode || SelectedRows.Count == 0)
             {
                 base.OnSelectionChanged(e);
                 return;
             }
 
-            foreach (DataGridViewRow row in SelectedRows)
+            // First index points to the currently selected account
+            var row = SelectedRows[0];
+            if (row.IsNewRow)
             {
-                if (row.IsNewRow)
-                {
-                    break;
-                }
-                var account = row.DataBoundItem as Account;
-                if (account != null && !account.LoginWanted)
-                {
-                    account.LoginWanted = true;
-                }
-            }
-
-            base.OnSelectionChanged(e);
-        }
-
-        // Unchecks login for an unselected account
-        protected override void OnRowLeave(DataGridViewCellEventArgs e)
-        {
-            if (MoveMode)
-            {
-                base.OnRowLeave(e);
+                base.OnSelectionChanged(e);
                 return;
             }
 
-            DataGridViewRow row = Rows[e.RowIndex];
-            var account = row.DataBoundItem as Account;
-
-            if (!row.IsNewRow && row.Selected)
-            {      
-                account.LoginWanted = false;
+            if (SelectedRows.Count == 1)
+            {
+                firstSelectedAccountIndex = row.Index;
             }
 
-            base.OnRowLeave(e);
+            // If we were to undo a selection and then selected the same accounts again,
+            // we'd be left with the first selection unchecked. Check it programatically.
+            if (IndexNextToFirstSelection(row.Index))
+            {
+                var firstSelectedAccount = Rows[firstSelectedAccountIndex].DataBoundItem as Account;
+                firstSelectedAccount.LoginWanted = true;
+            }
+
+            // If we are undoing a selection, the last selected account will remain checked.
+            // Uncheck it programatically.
+            if (ReversingSelectDirection(row.Index))
+            {
+                var lastSelectedAccount = Rows[lastSelectedAccountIndex].DataBoundItem as Account;
+                lastSelectedAccount.LoginWanted = false;
+            }
+
+            lastSelectedAccountIndex = row.Index;
+
+            var account = row.DataBoundItem as Account;
+            if (account != null)
+            {
+                account.LoginWanted = !account.LoginWanted;
+            }
+
+            base.OnSelectionChanged(e);
         }
 
         // Handles row dropping in another position
