@@ -43,7 +43,6 @@ namespace Tunetoon.Forms
             this.endSelectedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.endAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.untickAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.moveRowsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.LoginButton = new System.Windows.Forms.Button();
             this.accountGrid = new Tunetoon.Grid.AccountGrid();
             this.Login = new System.Windows.Forms.DataGridViewCheckBoxColumn();
@@ -64,8 +63,7 @@ namespace Tunetoon.Forms
             this.optionsMenuItem,
             this.endSelectedMenuItem,
             this.endAllMenuItem,
-            this.untickAllMenuItem,
-            this.moveRowsMenuItem});
+            this.untickAllMenuItem});
             this.TopMenu.Location = new System.Drawing.Point(0, 0);
             this.TopMenu.Name = "TopMenu";
             this.TopMenu.Size = new System.Drawing.Size(534, 24);
@@ -133,17 +131,6 @@ namespace Tunetoon.Forms
             this.untickAllMenuItem.Size = new System.Drawing.Size(70, 20);
             this.untickAllMenuItem.Text = "Untick All";
             this.untickAllMenuItem.Click += new System.EventHandler(this.UntickAll_Click);
-            // 
-            // moveRowsMenuItem
-            // 
-            this.moveRowsMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.moveRowsMenuItem.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.moveRowsMenuItem.Name = "moveRowsMenuItem";
-            this.moveRowsMenuItem.Padding = new System.Windows.Forms.Padding(0);
-            this.moveRowsMenuItem.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.moveRowsMenuItem.Size = new System.Drawing.Size(72, 20);
-            this.moveRowsMenuItem.Text = "Move Rows";
-            this.moveRowsMenuItem.Click += new System.EventHandler(this.MoveRows_Click);
             // 
             // LoginButton
             // 

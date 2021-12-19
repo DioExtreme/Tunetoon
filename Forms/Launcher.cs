@@ -479,27 +479,50 @@ namespace Tunetoon.Forms
             optionWnd.ShowDialog();
         }
 
-        private void MoveRows_Click(object sender, EventArgs e)
+        private void MoveModeIntent(bool keyHeldDown)
         {
             currentAccountList.RemoveSort();
-
-            if (!moveRowsMenuItem.Checked)
+            accountGrid.ClearGridSelections();
+            if (keyHeldDown == false && config.SelectEndGames)
             {
-                moveRowsMenuItem.Text = "Apply";
+                endSelectedMenuItem.Visible = true;
             }
             else
             {
-                moveRowsMenuItem.Text = "Move Rows";
-            }
-
-            if (!config.SelectEndGames)
-            {
                 endSelectedMenuItem.Visible = false;
             }
+            accountGrid.MoveMode = keyHeldDown;
+        }
 
-            accountGrid.MoveMode = moveRowsMenuItem.Checked = !moveRowsMenuItem.Checked;
+        protected override void OnDeactivate(EventArgs e)
+        {
+            if (accountGrid.MoveMode)
+            {
+                MoveModeIntent(false);
+            }
+            base.OnDeactivate(e);
+        }
 
-            accountGrid.ClearGridSelections();
+        protected override bool ProcessKeyPreview(ref Message msg)
+        {
+            if ((Keys)msg.WParam != Keys.ControlKey)
+            {
+                return base.ProcessKeyPreview(ref msg);
+            }
+
+            const int KeyDown = 0x100;
+            const int KeyUp = 0x101;
+
+            if (!accountGrid.MoveMode && msg.Msg == KeyDown)
+            {
+                MoveModeIntent(true);
+            }
+            else if (accountGrid.MoveMode && msg.Msg == KeyUp)
+            {
+                MoveModeIntent(false);
+            }
+
+            return true;
         }
     }
 }
