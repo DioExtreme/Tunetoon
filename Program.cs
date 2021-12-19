@@ -15,7 +15,9 @@ namespace Tunetoon
         private static void Main() 
         {
             ServicePointManager.DefaultConnectionLimit = 2 * Environment.ProcessorCount;
-            HttpClient.DefaultRequestHeaders.Add("User-Agent", "Tunetoon - A multi-toon launcher.");
+
+            const string Github = "https://github.com/DioExtreme/Tunetoon";
+            HttpClient.DefaultRequestHeaders.Add("User-Agent", $"Tunetoon - A multi-toon launcher. ({Github})");
 
             AppDomain.CurrentDomain.UnhandledException += App_UnhandledException;
             Directory.SetCurrentDirectory(Application.StartupPath);
