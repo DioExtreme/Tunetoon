@@ -8,7 +8,8 @@ namespace Tunetoon.Login
     public class LoginHandlerBase<T> : ILoginHandler<T> where T : Account
     {
         public List<T> AccountsToTwoStepAuth = new List<T>();
-        public virtual async Task LoginAll(AccountList<T> accountList)
+
+        public virtual async Task RequestLogin(AccountList<T> accountList)
         {
             AccountsToTwoStepAuth.Clear();
 
@@ -28,6 +29,12 @@ namespace Tunetoon.Login
         public virtual async Task HandleTwoStep()
         {
             await Task.CompletedTask;
+        }
+
+        public async Task LoginAccounts(AccountList<T> accountList)
+        {
+            await RequestLogin(accountList);
+            await HandleTwoStep();
         }
 
         public virtual void GetAuthResponse(T account)

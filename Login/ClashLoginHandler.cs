@@ -1,4 +1,7 @@
-﻿using Tunetoon.Accounts;
+﻿using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using Tunetoon.Accounts;
 
 namespace Tunetoon.Login
 {
@@ -38,6 +41,25 @@ namespace Tunetoon.Login
                 account.Authorized = false;
                 account.LoginToken = null;
             }
+        }
+
+        #pragma warning disable 1998
+        public override async Task HandleTwoStep()
+        {
+            var sb = new StringBuilder();
+
+            if (AccountsToTwoStepAuth.Count == 0)
+            {
+                return;
+            }
+
+            foreach (var account in AccountsToTwoStepAuth)
+            {
+                sb.AppendLine(account.Toon);
+            }
+
+            MessageBox.Show("Some toons require Toonstep:\n\n" + sb, "Toonstep", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            AccountsToTwoStepAuth.Clear();
         }
     }
 }

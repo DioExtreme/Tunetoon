@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Tunetoon.Accounts;
@@ -201,8 +200,6 @@ namespace Tunetoon.Forms
             // where the selection is not saved
             accountGrid.ClearGridSelections();
 
-            LoginButton.Enabled = false;
-
             if (config.GameServer == Server.Rewritten && !Directory.Exists(config.RewrittenPath) ||
                 config.GameServer == Server.Clash && !Directory.Exists(config.ClashPath))
             {
@@ -210,9 +207,13 @@ namespace Tunetoon.Forms
                 return;
             }
 
+            serverMenuItem.Enabled = false;
+            LoginButton.Enabled = false;
+
             try
             {
-                await LoginAccounts();
+                await loginHandler.LoginAccounts(currentAccountList);
+                gameHandler.StartGameForLoggedInAccounts(currentAccountList);
             }
             catch
             {
@@ -220,75 +221,8 @@ namespace Tunetoon.Forms
                     MessageBoxIcon.Error);
             }
 
-            LoginButton.Enabled = true;
-        }
-
-
-        // Used by Rewritten only currently
-        // Opens a form where the user can input two-step tokens
-        private async Task HandleTwoStep()
-        {
-            var accountsToTwoStepAuth = loginHandler.AccountsToTwoStepAuth;
-            while (accountsToTwoStepAuth.Count > 0)
-            {
-                bool authCancelled = false;
-                var authForm = new Auth(accountsToTwoStepAuth);
-                authForm.AuthTokensEntered += (accountsToAuth) => accountsToTwoStepAuth = accountsToAuth;
-                authForm.IsClosed += () => authCancelled = true;
-                authForm.ShowDialog();
-
-                if (authCancelled)
-                {
-                    break;
-                }
-
-                await rewrittenLoginHandler.HandleTwoStep();
-            }
-        }
-
-        // Used by Clash only currently
-        // It just informs their users to check their e-mail
-        private void InformTwoStep()
-        {
-            var sb = new StringBuilder();
-
-            var accountsToTwoStepAuth = loginHandler.AccountsToTwoStepAuth;
-            if (accountsToTwoStepAuth.Count == 0)
-            {
-                return;
-            }
-
-            foreach (var account in accountsToTwoStepAuth)
-            {
-                sb.AppendLine(account.Toon);
-            }
-
-            MessageBox.Show("Some toons require Toonstep:\n\n" + sb, "Toonstep", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            accountsToTwoStepAuth.Clear();
-        }
-
-        private async Task LoginAccounts()
-        {
-            serverMenuItem.Enabled = false;
-
-            await loginHandler.LoginAll(currentAccountList);
-            if (config.GameServer == Server.Rewritten)
-            {
-                await HandleTwoStep();
-            }
-            else
-            {
-                InformTwoStep();
-            }
-
-            foreach (var account in currentAccountList)
-            {
-                if (account.LoggedIn)
-                {
-                    gameHandler.StartGame(account);
-                }
-            }
             serverMenuItem.Enabled = true;
+            LoginButton.Enabled = true;
         }
 
         // Not aware of a good way to bind cell color to a boolean value

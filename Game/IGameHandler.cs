@@ -1,9 +1,10 @@
 ﻿using System.Diagnostics;
+using Tunetoon.Accounts;
 using Tunetoon.Login;
 
 namespace Tunetoon.Game
 {
-    public interface IGameHandler<T>
+    public interface IGameHandler<T> where T : Account
     {
         void OnProcessExit(T acc, Process gameProcess);
         void SetupBaseEnvVariables(ILoginResult result, Process gameProcess);
@@ -13,5 +14,7 @@ namespace Tunetoon.Game
 
         void StopGame(T account);
         void StopGame(T account, Process gameProcess);
+
+        void StartGameForLoggedInAccounts(AccountList<T> accountList);
     }
 }

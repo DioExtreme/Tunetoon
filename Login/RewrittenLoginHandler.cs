@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Tunetoon.Accounts;
+using Tunetoon.Forms;
 
 namespace Tunetoon.Login
 {
@@ -71,11 +72,10 @@ namespace Tunetoon.Login
                 AccountsToTwoStepAuth.Add(account);
                 return;
             }
-
             GetAuthResponse(account);
         }
 
-        public override async Task HandleTwoStep()
+        private async Task RequestLoginAfterTwoStep()
         {
             var tasks = new List<Task>();
             var authList = new List<RewrittenAccount>(AccountsToTwoStepAuth);
@@ -91,6 +91,25 @@ namespace Tunetoon.Login
                 tasks.Add(Task.Run(() => GetAuthResponse(account)));
             }
             await Task.WhenAll(tasks);
+        }
+
+        public override async Task HandleTwoStep()
+        {
+            while (AccountsToTwoStepAuth.Count > 0)
+            {
+                bool authCancelled = false;
+                var authForm = new Auth(AccountsToTwoStepAuth);
+                authForm.AuthTokensEntered += (accountsToAuth) => AccountsToTwoStepAuth = accountsToAuth;
+                authForm.IsClosed += () => authCancelled = true;
+                authForm.ShowDialog();
+
+                if (authCancelled)
+                {
+                    break;
+                }
+
+                await RequestLoginAfterTwoStep();
+            }
         }
     }
 }

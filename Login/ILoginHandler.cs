@@ -5,8 +5,9 @@ namespace Tunetoon.Login
 {
     interface ILoginHandler<T> where T : Account
     {
-        Task LoginAll(AccountList<T> accountList);
+        Task RequestLogin(AccountList<T> accountList);
         Task HandleTwoStep();
+        Task LoginAccounts(AccountList<T> accountList);
         void GetAuthResponse(T account);
         void HandleAuthResponse(T account);
     }

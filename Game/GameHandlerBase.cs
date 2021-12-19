@@ -63,5 +63,16 @@ namespace Tunetoon.Game
                 StopGame(account, gameProcess);
             }
         }
+
+        public void StartGameForLoggedInAccounts(AccountList<T> accountList)
+        {
+            foreach (var account in accountList)
+            {
+                if (account.LoggedIn)
+                {
+                    StartGame(account);
+                }
+            }
+        }
     }
 }
