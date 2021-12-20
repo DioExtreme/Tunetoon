@@ -28,7 +28,7 @@ namespace Tunetoon.Grid
             lastSelectedAccountIndex = -1;
         }
 
-        private bool RowIndexValid(int index)
+        public bool RowIndexValid(int index)
         {
             return index >= 0 && index != NewRowIndex;
         }

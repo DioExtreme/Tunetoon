@@ -365,7 +365,8 @@ namespace Tunetoon.Forms
         private void AccGrid_DragDrop(object sender, DragEventArgs e)
         {
             int rowIndexToDrop = accountGrid.RowIndexToDrop;
-            if (rowIndexToDrop < 0 || rowIndexToDrop >= currentAccountList.Count)
+
+            if (!accountGrid.RowIndexValid(rowIndexToDrop))
             {
                 return;
             }
