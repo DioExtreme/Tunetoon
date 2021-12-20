@@ -28,6 +28,11 @@ namespace Tunetoon.Grid
             lastSelectedAccountIndex = -1;
         }
 
+        private bool RowIndexValid(int index)
+        {
+            return index >= 0 && index != NewRowIndex;
+        }
+
         private bool IndexNextToFirstSelection(int index)
         {
             return index == firstSelectedAccountIndex + 1 || index == firstSelectedAccountIndex - 1;
@@ -125,7 +130,7 @@ namespace Tunetoon.Grid
                 return;
             }
 
-            if ((e.Button & MouseButtons.Left) == MouseButtons.Left && clickedRowIndex >= 0)
+            if ((e.Button & MouseButtons.Left) == MouseButtons.Left && RowIndexValid(clickedRowIndex))
             {
                 DoDragDrop(Rows[clickedRowIndex], DragDropEffects.Move);
             }
@@ -195,7 +200,7 @@ namespace Tunetoon.Grid
 
             RowIndexToDrop = HitTest(clientPoint.X, clientPoint.Y).RowIndex;
 
-            if (RowIndexToDrop < 0 || RowIndexToDrop == Rows.Count - 1)
+            if (!RowIndexValid(RowIndexToDrop))
             {
                 base.OnDragDrop(e);
                 return;

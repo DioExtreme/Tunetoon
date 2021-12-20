@@ -364,14 +364,15 @@ namespace Tunetoon.Forms
 
         private void AccGrid_DragDrop(object sender, DragEventArgs e)
         {
-            if (accountGrid.RowIndexToDrop < 0)
+            int rowIndexToDrop = accountGrid.RowIndexToDrop;
+            if (rowIndexToDrop < 0 || rowIndexToDrop >= currentAccountList.Count)
             {
                 return;
             }
 
-            var accountToMove = currentAccountList[accountGrid.RowIndexToDrop];
+            var accountToMove = currentAccountList[rowIndexToDrop];
             var color = accountToMove.LoggedIn ? Color.Green : Color.Red;
-            ChangeEndCellColor(accountGrid.RowIndexToDrop, color);
+            ChangeEndCellColor(rowIndexToDrop, color);
         }
 
         private void EndSelected_Click(object sender, EventArgs e)
