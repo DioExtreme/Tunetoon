@@ -485,12 +485,10 @@ namespace Tunetoon.Forms
 
             if (!moveRowsMenuItem.Checked)
             {
-                accountGrid.Columns[Toon.Index].ReadOnly = true;
                 moveRowsMenuItem.Text = "Apply";
             }
             else
             {
-                accountGrid.Columns[Toon.Index].ReadOnly = false;
                 moveRowsMenuItem.Text = "Move Rows";
             }
 

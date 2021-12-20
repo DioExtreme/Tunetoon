@@ -45,7 +45,7 @@ namespace Tunetoon.Forms
             this.untickAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moveRowsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.LoginButton = new System.Windows.Forms.Button();
-            this.accountGrid = new AccountGrid();
+            this.accountGrid = new Tunetoon.Grid.AccountGrid();
             this.Login = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Toon = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ToonSlots = new System.Windows.Forms.DataGridViewComboBoxColumn();
@@ -155,7 +155,7 @@ namespace Tunetoon.Forms
             this.LoginButton.UseVisualStyleBackColor = true;
             this.LoginButton.Click += new System.EventHandler(this.LoginButton_Click);
             // 
-            // AccountGrid
+            // accountGrid
             // 
             this.accountGrid.AllowDrop = true;
             this.accountGrid.AllowUserToResizeColumns = false;
@@ -193,6 +193,7 @@ namespace Tunetoon.Forms
             this.Toon.DataPropertyName = "Toon";
             this.Toon.HeaderText = "Toon";
             this.Toon.Name = "Toon";
+            this.Toon.ReadOnly = true;
             // 
             // ToonSlots
             // 
@@ -250,10 +251,10 @@ namespace Tunetoon.Forms
         private ContextMenuStrip ServerMenuStrip;
         private ToolStripMenuItem rewrittenMenuItem;
         private ToolStripMenuItem clashMenuItem;
+        private ToolStripMenuItem moveRowsMenuItem;
         private DataGridViewCheckBoxColumn Login;
         private DataGridViewTextBoxColumn Toon;
         private DataGridViewComboBoxColumn ToonSlots;
         private DataGridViewCheckBoxColumn End;
-        private ToolStripMenuItem moveRowsMenuItem;
     }
 }
