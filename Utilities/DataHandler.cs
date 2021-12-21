@@ -10,19 +10,20 @@ namespace Tunetoon.Utilities
     {
         private Dictionary<string, Dictionary<string, int>> clashIngameToons;
 
-        public void FindClashIngameToons(ClashAccount account)
+        private void FindClashIngameToons(ClashAccount account)
         {
             if (account.Username == null)
             { 
                 return;
             }
 
-            if (!clashIngameToons.ContainsKey(account.Username.ToLower()))
+            string usernameLowercase = account.Username.ToLower();
+            if (!clashIngameToons.ContainsKey(usernameLowercase))
             {
                 return;
             }
             
-            var toons = clashIngameToons[account.Username.ToLower()];
+            var toons = clashIngameToons[usernameLowercase];
             
             foreach(var toon in toons)
             {
@@ -30,6 +31,14 @@ namespace Tunetoon.Utilities
                 {
                     account.ClashIngameToons.Add(toon.Value, toon.Key);
                 }
+            }
+        }
+
+        public void FindClashIngameToons(AccountList<ClashAccount> clashAccountList)
+        {
+            foreach (ClashAccount clashAccount in clashAccountList)
+            {
+                FindClashIngameToons(clashAccount);
             }
         }
 
@@ -95,7 +104,6 @@ namespace Tunetoon.Utilities
                         account.ToonSlot = 0;
                         account.Authorized = false;
                     }
-                    FindClashIngameToons(account);
                 }
                 else
                 {

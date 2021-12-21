@@ -69,6 +69,7 @@ namespace Tunetoon.Forms
                 rewrittenAccountList = dataHandler.Deserialize<AccountList<RewrittenAccount>>("AccListRewritten.nully");
                 clashAccountList = dataHandler.Deserialize<AccountList<ClashAccount>>("AccListClash.nully");
             }
+            dataHandler.FindClashIngameToons(clashAccountList);
 
             InitializeComponent();
 
