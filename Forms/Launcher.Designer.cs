@@ -238,7 +238,6 @@ namespace Tunetoon.Forms
         private ContextMenuStrip ServerMenuStrip;
         private ToolStripMenuItem rewrittenMenuItem;
         private ToolStripMenuItem clashMenuItem;
-        private ToolStripMenuItem moveRowsMenuItem;
         private DataGridViewCheckBoxColumn Login;
         private DataGridViewTextBoxColumn Toon;
         private DataGridViewComboBoxColumn ToonSlots;
