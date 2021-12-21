@@ -178,7 +178,7 @@ namespace Tunetoon.Forms
             serverMenuItem.Enabled = true;
         }
 
-        private async void Launcher_Load(object sender, EventArgs e)
+        private async void Launcher_Shown(object sender, EventArgs e)
         {
             await StartUpdate();
         }

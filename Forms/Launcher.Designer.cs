@@ -217,7 +217,7 @@ namespace Tunetoon.Forms
             this.Name = "Launcher";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Tunetoon";
-            this.Load += new System.EventHandler(this.Launcher_Load);
+            this.Shown += new System.EventHandler(this.Launcher_Shown);
             this.TopMenu.ResumeLayout(false);
             this.TopMenu.PerformLayout();
             this.ServerMenuStrip.ResumeLayout(false);
