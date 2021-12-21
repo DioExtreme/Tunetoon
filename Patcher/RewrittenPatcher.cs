@@ -2,22 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Tunetoon.Patcher
 {
-    public class RewrittenPatcher : IPatcher
+    public class RewrittenPatcher : PatcherBase
     {
-        private HttpClient httpClient = Program.HttpClient;
-        private FileDownloader fileDownloader = new FileDownloader();
-
-        private CancellationTokenSource cts = new CancellationTokenSource();
-        private CancellationToken ct;
-
-        private Config config;
-
         private Dictionary<string, RewrittenFile> patchManifest;
         private Dictionary<string, RewrittenPatch> filesToUpdate = new Dictionary<string, RewrittenPatch>();
         private Dictionary<string, RewrittenFile> filesNeeded = new Dictionary<string, RewrittenFile>();
@@ -26,20 +16,17 @@ namespace Tunetoon.Patcher
 
         private const string UpdateUrl = "https://cdn.toontownrewritten.com";
 
-        private PatchProgress patchProgress = new PatchProgress();
-        private PatcherStatus status;
-
         public RewrittenPatcher(Config config)
         {
             this.config = config;
         }
 
-        public bool HasFailed()
+        public override string GetGameDirectory()
         {
-            return status != PatcherStatus.Success;
+            return config.RewrittenPath;
         }
 
-        public void GetPatchManifest()
+        public override void GetPatchManifest()
         {
             try
             {
@@ -65,8 +52,10 @@ namespace Tunetoon.Patcher
             }
         }
 
-        public void CheckGameFiles(Progress<PatchProgress> progress)
+        public override void CheckGameFiles(Progress<PatchProgress> progress)
         {
+            base.CheckGameFiles(progress);
+
             patchProgress.NewWork(progress, patchManifest.Count);
             string gamePath = config.RewrittenPath;
 
@@ -151,8 +140,10 @@ namespace Tunetoon.Patcher
             cts.Cancel();
         }
 
-        public async Task DownloadGameFiles(Progress<PatchProgress> progress)
+        public override async Task DownloadGameFiles(Progress<PatchProgress> progress)
         {
+            await base.DownloadGameFiles(progress);
+
             GetMirrors();
 
             if (status == PatcherStatus.MirrorsFailure)
@@ -182,8 +173,10 @@ namespace Tunetoon.Patcher
             await Task.WhenAll(tasks);
         }
 
-        public void PatchGameFiles(Progress<PatchProgress> progress)
+        public override void PatchGameFiles(Progress<PatchProgress> progress)
         {
+            base.PatchGameFiles(progress);
+
             string rewrittenPath = config.RewrittenPath;
 
             patchProgress.NewWork(progress, filesToUpdate.Count + filesNeeded.Count);

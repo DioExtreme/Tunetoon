@@ -111,49 +111,42 @@ namespace Tunetoon.Forms
             }
         }
 
+        private void ReflectPatcherProgress(PatchProgress p)
+        {
+            Text = $"Tunetoon - {p.currentAction} Files {p.CurrentFilesProcessed}/{p.TotalFilesToProcess}";
+        }
+
         private void ShowPatcherError(string text)
         {
             MessageBox.Show(text, "Game patcher", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        private async Task RunPatcherAsync()
+        private void AssertPatcherError(string errorText)
         {
-            await Task.Run(() => gamePatcher.GetPatchManifest());
-
             if (gamePatcher.HasFailed())
             {
-                ShowPatcherError("Could not retrieve patch manifest. The game has not been updated.");
-                return;
-            }
-
-            string actionStr = "Checking";
-
-            var progress = new Progress<PatchProgress>(p =>
-            {
-                Text = "Tunetoon - " + actionStr + " Files " + p.CurrentFilesProcessed + "/" + p.TotalFilesToProcess;
-            });
-
-            await Task.Run(() => gamePatcher.CheckGameFiles(progress));
-
-            actionStr = "Downloading";
-            await Task.Run(() => gamePatcher.DownloadGameFiles(progress));
-
-            if (gamePatcher.HasFailed())
-            {
-                ShowPatcherError("An error occured downloading update files. The game has not been updated.");
-                return;
-            }
-
-            actionStr = "Patching";
-            await Task.Run(() => gamePatcher.PatchGameFiles(progress));
-
-            if (gamePatcher.HasFailed())
-            {
-                ShowPatcherError("An error occured applying game patches. The game has not been updated.");
+                throw new PatchException(errorText);
             }
         }
 
-        public async Task StartUpdate()
+        private async Task RunPatcherAsync(Progress<PatchProgress> progress)
+        {
+            gamePatcher.Initialize(gamePatcher.GetGameDirectory());
+            AssertPatcherError("Unable to create game directory. Check permissions or change the target directory.");
+
+            gamePatcher.GetPatchManifest();
+            AssertPatcherError("Could not retrieve patch manifest. The game has not been updated.");
+
+            gamePatcher.CheckGameFiles(progress);
+
+            await gamePatcher.DownloadGameFiles(progress);
+            AssertPatcherError("An error occured downloading update files. The game has not been updated.");
+
+            gamePatcher.PatchGameFiles(progress);
+            AssertPatcherError("An error occured applying game patches. The game has not been updated.");
+        }
+
+        private async Task StartUpdate()
         {
             // Don't update if user does not want to or the game is running
             if (config.SkipUpdates || gameHandler.ActiveProcesses.Count > 0)
@@ -161,27 +154,22 @@ namespace Tunetoon.Forms
                 return;
             }
 
-            try
-            {
-                if (config.GameServer == Server.Rewritten && !Directory.Exists(config.RewrittenPath))
-                {
-                    Directory.CreateDirectory(config.RewrittenPath);
-                }
-                else if (config.GameServer == Server.Clash && !Directory.Exists(config.ClashPath))
-                {
-                    Directory.CreateDirectory(config.ClashPath);
-                }
-            }
-            catch
-            {
-                return;
-            }
-
             LoginButton.Enabled = false;
             serverMenuItem.Enabled = false;
             LoginButton.Text = "Checking for updates...";
-            
-            await RunPatcherAsync();
+
+            try
+            {
+                var progress = new Progress<PatchProgress>(p =>
+                {
+                    ReflectPatcherProgress(p);
+                });
+                await Task.Run(() => RunPatcherAsync(progress));
+            }
+            catch (PatchException e)
+            {
+                ShowPatcherError(e.Message);
+            }
 
             Text = "Tunetoon";
             LoginButton.Text = "Play";

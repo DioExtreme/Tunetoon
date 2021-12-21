@@ -3,6 +3,7 @@
     public enum PatcherStatus
     {
         Success,
+        DirectoryCreationFailure,
         PatchManifestFailure,
         MirrorsFailure,
         FileDownloadFailure,

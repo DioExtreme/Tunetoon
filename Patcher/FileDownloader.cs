@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Tunetoon.Patcher
 {
-    class FileDownloader
+    public class FileDownloader
     {
         private SemaphoreSlim semaphore = new SemaphoreSlim(2);
         private HttpClient httpClient = Program.HttpClient;

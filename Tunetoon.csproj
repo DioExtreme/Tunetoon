@@ -113,6 +113,8 @@
     <Compile Include="Accounts\ClashAccount.cs" />
     <Compile Include="Accounts\RewrittenAccount.cs" />
     <Compile Include="Login\Authorization\ClashAuthorization.cs" />
+    <Compile Include="Patcher\PatcherBase.cs" />
+    <Compile Include="Patcher\PatchException.cs" />
     <Compile Include="Utilities\DataHandler.cs" />
     <Compile Include="Forms\AccountEdit.cs">
       <SubType>Form</SubType>

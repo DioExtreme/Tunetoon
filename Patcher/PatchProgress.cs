@@ -8,6 +8,7 @@ namespace Tunetoon.Patcher
     {
         public int CurrentFilesProcessed;
         public int TotalFilesToProcess;
+        public string currentAction;
 
         public void NewWork(IProgress<PatchProgress> progress, int totalFiles)
         {

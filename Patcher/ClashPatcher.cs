@@ -8,37 +8,27 @@ using System.Threading.Tasks;
 
 namespace Tunetoon.Patcher
 {
-    public class ClashPatcher : IPatcher
+    public class ClashPatcher : PatcherBase
     {
-        private HttpClient httpClient = Program.HttpClient;
-        private FileDownloader fileDownloader = new FileDownloader();
-
-        private CancellationTokenSource cts = new CancellationTokenSource();
-        private CancellationToken ct;
-
         private List<ClashFile> patchManifest;
         private List<ClashFile> filesNeeded = new List<ClashFile>();
-
-        private Config config;
 
         private const string WinManifest = "https://corporateclash.net/api/v1/launcher/manifest/v2/windows_production.js";
         private const string ResourceManifest = "https://corporateclash.net/api/v1/launcher/manifest/v2/resources_production.js";
         private const string UpdateUrl = "https://aws1.corporateclash.net/productionv2/";
 
-        private PatchProgress patchProgress = new PatchProgress();
-        private PatcherStatus status;
-
         public ClashPatcher(Config config)
         {
             this.config = config;
+            Initialize(config.ClashPath);
         }
 
-        public bool HasFailed()
+        public override string GetGameDirectory()
         {
-            return status != PatcherStatus.Success;
+            return config.ClashPath;
         }
 
-        public void GetPatchManifest()
+        public override void GetPatchManifest()
         {
             patchManifest = new List<ClashFile>();
 
@@ -60,8 +50,10 @@ namespace Tunetoon.Patcher
             }
         }
 
-        public void CheckGameFiles(Progress<PatchProgress> progress)
+        public override void CheckGameFiles(Progress<PatchProgress> progress)
         {
+            base.CheckGameFiles(progress);
+
             string gamePath = config.ClashPath;
             patchProgress.NewWork(progress, patchManifest.Count);
 
@@ -129,8 +121,10 @@ namespace Tunetoon.Patcher
         }
 
 
-        public async Task DownloadGameFiles(Progress<PatchProgress> progress)
+        public override async Task DownloadGameFiles(Progress<PatchProgress> progress)
         {
+            await base.DownloadGameFiles(progress);
+
             var tasks = new List<Task>();
 
             ct = cts.Token;
@@ -145,8 +139,10 @@ namespace Tunetoon.Patcher
             await Task.WhenAll(tasks);
         }
 
-        public void PatchGameFiles(Progress<PatchProgress> progress)
+        public override void PatchGameFiles(Progress<PatchProgress> progress)
         {
+            base.PatchGameFiles(progress);
+
             string gamePath = config.ClashPath;
             patchProgress.NewWork(progress, filesNeeded.Count);
 
