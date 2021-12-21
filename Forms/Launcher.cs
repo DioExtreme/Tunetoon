@@ -141,10 +141,10 @@ namespace Tunetoon.Forms
             gamePatcher.CheckGameFiles(progress);
 
             await gamePatcher.DownloadGameFiles(progress);
-            AssertPatcherError("An error occured downloading update files. The game has not been updated.");
+            AssertPatcherError("An error occurred downloading update files. The game has not been updated.");
 
             gamePatcher.PatchGameFiles(progress);
-            AssertPatcherError("An error occured applying game patches. The game has not been updated.");
+            AssertPatcherError("An error occurred applying game patches. The game has not been updated.");
         }
 
         private async Task StartUpdate()
@@ -161,10 +161,7 @@ namespace Tunetoon.Forms
 
             try
             {
-                var progress = new Progress<PatchProgress>(p =>
-                {
-                    ReflectPatcherProgress(p);
-                });
+                var progress = new Progress<PatchProgress>(ReflectPatcherProgress);
                 await Task.Run(() => RunPatcherAsync(progress));
             }
             catch (PatchException e)
