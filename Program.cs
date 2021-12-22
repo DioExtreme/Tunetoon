@@ -38,7 +38,7 @@ namespace Tunetoon
             }
             using (StreamWriter sw = File.AppendText(strPath))
             {
-                sw.WriteLine("Crash occured at: " + DateTime.Now);
+                sw.WriteLine("Crash occurred at: " + DateTime.Now);
                 sw.WriteLine();
                 sw.WriteLine(ex.Message);
                 sw.WriteLine(ex.StackTrace);
