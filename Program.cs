@@ -32,10 +32,6 @@ namespace Tunetoon
         {
             var ex = (Exception)e.ExceptionObject;
             string strPath = "Crash" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".txt";
-            if (!File.Exists(strPath))
-            {
-                File.Create(strPath).Dispose();
-            }
             using (StreamWriter sw = File.AppendText(strPath))
             {
                 sw.WriteLine("Crash occurred at: " + DateTime.Now);
