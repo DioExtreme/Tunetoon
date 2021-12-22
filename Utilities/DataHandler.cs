@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using static System.Environment;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Newtonsoft.Json;
@@ -8,6 +9,7 @@ namespace Tunetoon.Utilities
 {
     class DataHandler
     {
+        private readonly string criticalDirectory = GetFolderPath(SpecialFolder.LocalApplicationData) + "\\DioExtreme\\Rescue\\";
         private Dictionary<string, Dictionary<string, int>> clashIngameToons;
 
         private void FindClashIngameToons(ClashAccount account)
@@ -44,11 +46,17 @@ namespace Tunetoon.Utilities
 
         public T Deserialize<T>(string file) where T : new()
         {
-            var accountList = new T();
+            bool deleteAfter = false;
+            string criticalFile = $"{criticalDirectory}{file}";
 
-            if (!File.Exists(file))
+            if (File.Exists(criticalFile))
             {
-                return accountList;
+                file = criticalFile;
+                deleteAfter = true;
+            }
+            else if (!File.Exists(file))
+            {
+                return new T();
             }
 
             string json;
@@ -57,14 +65,19 @@ namespace Tunetoon.Utilities
                 json = sr.ReadToEnd();
             }
 
-            accountList = JsonConvert.DeserializeObject<T>(json);
+            if (deleteAfter)
+            {
+                File.Delete(file);
+            }
 
-            if (accountList == null)
+            var obj = JsonConvert.DeserializeObject<T>(json);
+
+            if (obj == null)
             {
                 return new T();
             }
 
-            return accountList;
+            return obj;
         }
 
         public void DecryptBase(Account account)
@@ -113,22 +126,9 @@ namespace Tunetoon.Utilities
             }
         }
 
-        public Config LoadConfig(string fileName)
+        public Config LoadConfig(string file)
         {
-            if (!File.Exists(fileName))
-            {
-                return new Config();
-            }
-            using (var sr = new StreamReader(fileName))
-            {
-                string json = sr.ReadToEnd();
-                var loadedConfig = JsonConvert.DeserializeObject<Config>(json);
-                if (loadedConfig == null)
-                {
-                    return new Config();
-                }
-                return loadedConfig;
-            }
+            return Deserialize<Config>(file);
         }
 
         public Dictionary<string, Dictionary<string, int>> LoadToonJson(Config config)
@@ -165,34 +165,37 @@ namespace Tunetoon.Utilities
             clashIngameToons = LoadToonJson(config);
         }
 
-        public void SaveConfig(Config config, string file)
+        private void WriteObjectToFile<T>(T obj, string file)
         {
             try
             {
                 using (var sw = new StreamWriter(file))
                 {
-                    sw.Write(JsonConvert.SerializeObject(config, Formatting.Indented));
+                    sw.Write(JsonConvert.SerializeObject(obj, Formatting.Indented));
                 }
             }
             catch
             {
-                // ignored
+                if (!Directory.Exists(criticalDirectory))
+                {
+                    Directory.CreateDirectory(criticalDirectory);
+                }
+                string criticalFile = $"{criticalDirectory}{file}";
+                using (var sw = new StreamWriter(criticalFile))
+                {
+                    sw.Write(JsonConvert.SerializeObject(obj, Formatting.Indented));
+                }
             }
+        }
+
+        public void SaveConfig(Config config, string file)
+        {
+            WriteObjectToFile(config, file);
         }
 
         public void SaveSerialized<T>(T accountList, string file)
         {
-            try
-            {
-                using (var sw = new StreamWriter(file))
-                {
-                    sw.Write(JsonConvert.SerializeObject(accountList, Formatting.Indented));
-                }
-            }
-            catch
-            {
-                // ignored
-            }
+            WriteObjectToFile(accountList, file);
         }
 
         public void EncryptBase(Account account)
