@@ -12,7 +12,7 @@ namespace Tunetoon.Utilities
         private readonly string criticalDirectory = GetFolderPath(SpecialFolder.LocalApplicationData) + "\\DioExtreme\\Rescue\\";
         private Dictionary<string, Dictionary<string, int>> clashIngameToons;
 
-        private void FindClashIngameToons(ClashAccount account)
+        public void FindClashIngameToons(ClashAccount account)
         {
             if (account.Username == null)
             { 
