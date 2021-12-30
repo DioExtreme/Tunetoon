@@ -43,6 +43,8 @@ namespace Tunetoon.Forms
         private ClashGridHandler clashGridHandler = new ClashGridHandler();
         private IGridHandler gridHandler;
 
+        private AccountEdit accountEdit = new AccountEdit();
+
         private Config config;
 
         public Launcher()
@@ -70,6 +72,8 @@ namespace Tunetoon.Forms
                 clashAccountList = dataHandler.Deserialize<AccountList<ClashAccount>>("AccListClash.nully");
             }
             dataHandler.FindClashIngameToons(clashAccountList);
+
+            accountEdit.Edited += AccountEditComplete;
 
             InitializeComponent();
 
@@ -314,12 +318,10 @@ namespace Tunetoon.Forms
         private void AccountEditComplete(dynamic account, int index)
         {
             currentAccountList[index] = account;
-
             if (account is ClashAccount && account.Authorized)
             {
-                dataHandler.FindClashIngameToons(account); 
+                dataHandler.FindClashIngameToons(account);
             }
-
             bindingSource.ResetBindings(false);
         }
 
@@ -335,9 +337,7 @@ namespace Tunetoon.Forms
 
             if (e.ColumnIndex == Toon.Index && !accountGrid.MoveMode)
             {
-                var accountEdit = new AccountEdit(account, e.RowIndex);
-                accountEdit.Edited += AccountEditComplete;
-                accountEdit.ShowDialog();
+                accountEdit.StartEdit(account, e.RowIndex);
             } 
             else
             {

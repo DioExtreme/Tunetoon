@@ -118,7 +118,6 @@ namespace Tunetoon.Forms
             this.Name = "AccountEdit";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Info";
-            this.Load += new System.EventHandler(this.AccountEdit_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

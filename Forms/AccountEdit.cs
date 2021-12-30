@@ -11,36 +11,42 @@ namespace Tunetoon.Forms
 
         private dynamic account;
         private int index;
-        public AccountEdit(dynamic account, int index)
+
+        public AccountEdit()
         {
             InitializeComponent();
+        }
 
+        public void StartEdit(dynamic account, int index)
+        {
             FriendlyBox.Text = account.Toon;
             UsernameBox.Text = account.Username;
             PasswordBox.Text = account.Password;
 
             this.account = account;
             this.index = index;
+
+            ShowDialog();
         }
         private void HandleAccount(RewrittenAccount account)
         {
-            this.account.Username = UsernameBox.Text;
-            this.account.Password = PasswordBox.Text;
+            account.Username = UsernameBox.Text;
+            account.Password = PasswordBox.Text;
             Edited(account, index);
-            Dispose();
+            Close();
         }
 
         private void HandleAccount(ClashAccount account)
         {
-            if (this.account.Authorized && this.account.Username == UsernameBox.Text && this.account.Password == PasswordBox.Text)
+            if (account.Authorized && account.Username == UsernameBox.Text && account.Password == PasswordBox.Text)
             {
                 Edited(account, index);
-                Dispose();
+                Close();
                 return;
             }
 
-            this.account.Username = UsernameBox.Text;
-            this.account.Password = PasswordBox.Text;
+            account.Username = UsernameBox.Text;
+            account.Password = PasswordBox.Text;
 
             DoneButton.Text = "Authorizing...";
             DoneButton.Enabled = false;
@@ -57,18 +63,13 @@ namespace Tunetoon.Forms
             }
 
             Edited(account, index);
-            Dispose();
+            Close();
         }
 
         private void DoneButton_Click(object sender, EventArgs e)
         {
             account.Toon = FriendlyBox.Text;
             HandleAccount(account);
-        }
-
-        private void AccountEdit_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }
