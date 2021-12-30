@@ -100,11 +100,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BZip2\BZip2Constants.cs" />
-    <Compile Include="BZip2\BZip2Crc.cs" />
     <Compile Include="BZip2\BZip2Decompressor.cs" />
     <Compile Include="BZip2\BZip2Exception.cs" />
     <Compile Include="BZip2\BZip2InputStream.cs" />
-    <Compile Include="BZip2\CrcUtilites.cs" />
     <Compile Include="BZip2\StreamUtils.cs" />
     <Compile Include="Grid\AccountGrid.cs">
       <SubType>Component</SubType>

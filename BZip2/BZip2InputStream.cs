@@ -58,7 +58,6 @@ namespace Tunetoon.BZip2
 
 		private int bitBuffer;
 		private int bitCount;
-		private BZip2Crc mCrc = new BZip2Crc();
 
 		private bool[] inUse = new bool[256];
 		private int nInUse;
@@ -89,10 +88,6 @@ namespace Tunetoon.BZip2
 		private int currentChar = -1;
 
 		private int currentState = START_BLOCK_STATE;
-
-		private int storedBlockCRC, storedCombinedCRC;
-		private int computedBlockCRC;
-		private uint computedCombinedCRC;
 
 		private int count, chPrev, ch2;
 		private int tPos;
@@ -349,7 +344,6 @@ namespace Tunetoon.BZip2
 			}
 
 			SetDecompressStructureSizes(blockSize - '0');
-			computedCombinedCRC = 0;
 		}
 
 		private void InitBlock()
@@ -359,7 +353,7 @@ namespace Tunetoon.BZip2
 
 			if (marker1 == BZip2Constants.StreamEndMarker1 && marker2 == BZip2Constants.StreamEndMarker2)
 			{
-				Complete();
+				streamEnd = true;
 				return;
 			}
 
@@ -369,40 +363,14 @@ namespace Tunetoon.BZip2
 				return;
             }
 
-			storedBlockCRC = ReadInt32();
+			// storedBlockCRC
+			ReadInt32();
 
 			ReadBits(1);
 
 			GetAndMoveToFrontDecode();
 
-			mCrc.Reset();
 			currentState = START_BLOCK_STATE;
-		}
-
-		private void EndBlock()
-		{
-			computedBlockCRC = (int)mCrc.Value;
-
-			// -- A bad CRC is considered a fatal error. --
-			if (storedBlockCRC != computedBlockCRC)
-			{
-				CrcError();
-			}
-
-			// 1528150659
-			computedCombinedCRC = ((computedCombinedCRC << 1) & 0xFFFFFFFF) | (computedCombinedCRC >> 31);
-			computedCombinedCRC = computedCombinedCRC ^ (uint)computedBlockCRC;
-		}
-
-		private void Complete()
-		{
-			storedCombinedCRC = ReadInt32();
-			if (storedCombinedCRC != (int)computedCombinedCRC)
-			{
-				CrcError();
-			}
-
-			streamEnd = true;
 		}
 
 		private void FillBuffer()
@@ -775,11 +743,9 @@ namespace Tunetoon.BZip2
 
 				currentChar = ch2;
 				currentState = NO_RAND_PART_B_STATE;
-				mCrc.Update(ch2);
 			}
 			else
 			{
-				EndBlock();
 				InitBlock();
 				SetupBlock();
 			}
@@ -817,7 +783,6 @@ namespace Tunetoon.BZip2
 			if (j2 < (int)z)
 			{
 				currentChar = ch2;
-				mCrc.Update(ch2);
 				j2++;
 			}
 			else
@@ -861,11 +826,6 @@ namespace Tunetoon.BZip2
 		private static void BadBlockHeader()
 		{
 			throw new BZip2Exception("BZip2 input stream bad block header");
-		}
-
-		private static void CrcError()
-		{
-			throw new BZip2Exception("BZip2 input stream crc error");
 		}
 
 		private static void HbCreateDecodeTables(int[] limit, int[] baseArray, int[] perm, char[] length, int minLen, int maxLen, int alphaSize)
