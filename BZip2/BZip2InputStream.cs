@@ -31,9 +31,6 @@ namespace Tunetoon.BZip2
 		#region Constants
 
 		private const int START_BLOCK_STATE = 1;
-		private const int RAND_PART_A_STATE = 2;
-		private const int RAND_PART_B_STATE = 3;
-		private const int RAND_PART_C_STATE = 4;
 		private const int NO_RAND_PART_A_STATE = 5;
 		private const int NO_RAND_PART_B_STATE = 6;
 		private const int NO_RAND_PART_C_STATE = 7;
@@ -59,10 +56,8 @@ namespace Tunetoon.BZip2
 		--*/
 		private int blockSize100k;
 
-		private bool blockRandomised;
-
-		private int bsBuff;
-		private int bsLive;
+		private int bitBuffer;
+		private int bitCount;
 		private BZip2Crc mCrc = new BZip2Crc();
 
 		private bool[] inUse = new bool[256];
@@ -101,8 +96,6 @@ namespace Tunetoon.BZip2
 
 		private int count, chPrev, ch2;
 		private int tPos;
-		private int rNToGo;
-		private int rTPos;
 		private int i2, j2;
 		private byte z;
 
@@ -125,8 +118,8 @@ namespace Tunetoon.BZip2
 			}
 
 			baseStream = stream;
-			bsLive = 0;
-			bsBuff = 0;
+			bitCount = 0;
+			bitBuffer = 0;
 			Initialize();
 			InitBlock();
 			SetupBlock();
@@ -311,14 +304,6 @@ namespace Tunetoon.BZip2
 			int retChar = currentChar;
 			switch (currentState)
 			{
-				case RAND_PART_B_STATE:
-					SetupRandPartB();
-					break;
-
-				case RAND_PART_C_STATE:
-					SetupRandPartC();
-					break;
-
 				case NO_RAND_PART_B_STATE:
 					SetupNoRandPartB();
 					break;
@@ -329,7 +314,6 @@ namespace Tunetoon.BZip2
 
 				case START_BLOCK_STATE:
 				case NO_RAND_PART_A_STATE:
-				case RAND_PART_A_STATE:
 					break;
 			}
 			return retChar;
@@ -353,47 +337,41 @@ namespace Tunetoon.BZip2
 
 		private void Initialize()
 		{
-			char magic1 = BsGetUChar();
-			char magic2 = BsGetUChar();
+			int marker1 = ReadBits(16);
+			int marker2 = ReadBits(8);
+			char blockSize = ReadUChar();
 
-			char magic3 = BsGetUChar();
-			char magic4 = BsGetUChar();
-
-			if (magic1 != 'B' || magic2 != 'Z' || magic3 != 'h' || magic4 < '1' || magic4 > '9')
+			if (marker1 != BZip2Constants.StreamStartMarker1 || marker2 != BZip2Constants.StreamStartMarker2
+				|| blockSize < '1' || blockSize > '9')
 			{
 				streamEnd = true;
 				return;
 			}
 
-			SetDecompressStructureSizes(magic4 - '0');
+			SetDecompressStructureSizes(blockSize - '0');
 			computedCombinedCRC = 0;
 		}
 
 		private void InitBlock()
 		{
-			char magic1 = BsGetUChar();
-			char magic2 = BsGetUChar();
-			char magic3 = BsGetUChar();
-			char magic4 = BsGetUChar();
-			char magic5 = BsGetUChar();
-			char magic6 = BsGetUChar();
+			int marker1 = ReadBits(24);
+			int marker2 = ReadBits(24);
 
-			if (magic1 == 0x17 && magic2 == 0x72 && magic3 == 0x45 && magic4 == 0x38 && magic5 == 0x50 && magic6 == 0x90)
+			if (marker1 == BZip2Constants.StreamEndMarker1 && marker2 == BZip2Constants.StreamEndMarker2)
 			{
 				Complete();
 				return;
 			}
 
-			if (magic1 != 0x31 || magic2 != 0x41 || magic3 != 0x59 || magic4 != 0x26 || magic5 != 0x53 || magic6 != 0x59)
-			{
+			if (marker1 != BZip2Constants.BlockHeaderMarker1 || marker2 != BZip2Constants.BlockHeaderMarker2)
+            {
 				BadBlockHeader();
-				streamEnd = true;
 				return;
-			}
+            }
 
-			storedBlockCRC = BsGetInt32();
+			storedBlockCRC = ReadInt32();
 
-			blockRandomised = (BsR(1) == 1);
+			ReadBits(1);
 
 			GetAndMoveToFrontDecode();
 
@@ -418,7 +396,7 @@ namespace Tunetoon.BZip2
 
 		private void Complete()
 		{
-			storedCombinedCRC = BsGetInt32();
+			storedCombinedCRC = ReadInt32();
 			if (storedCombinedCRC != (int)computedCombinedCRC)
 			{
 				CrcError();
@@ -429,54 +407,49 @@ namespace Tunetoon.BZip2
 
 		private void FillBuffer()
 		{
-			int thech = 0;
+			int byteRead = 0;
 
 			try
 			{
-				thech = baseStream.ReadByte();
+				byteRead = baseStream.ReadByte();
 			}
 			catch (Exception)
 			{
 				CompressedStreamEOF();
 			}
 
-			if (thech == -1)
+			if (byteRead == -1)
 			{
 				CompressedStreamEOF();
 			}
 
-			bsBuff = (bsBuff << 8) | (thech & 0xFF);
-			bsLive += 8;
+			bitBuffer = (bitBuffer << 8) | (byteRead & 0xFF);
+			bitCount += 8;
 		}
 
-		private int BsR(int n)
+		private int ReadBits(int n)
 		{
-			while (bsLive < n)
+			while (bitCount < n)
 			{
 				FillBuffer();
 			}
 
-			int v = (bsBuff >> (bsLive - n)) & ((1 << n) - 1);
-			bsLive -= n;
+			int v = (bitBuffer >> (bitCount - n)) & ((1 << n) - 1);
+			bitCount -= n;
 			return v;
 		}
 
-		private char BsGetUChar()
+		private char ReadUChar()
 		{
-			return (char)BsR(8);
+			return (char)ReadBits(8);
 		}
 
-		private int BsGetIntVS(int numBits)
+		private int ReadInt32()
 		{
-			return BsR(numBits);
-		}
-
-		private int BsGetInt32()
-		{
-			int result = BsR(8);
-			result = (result << 8) | BsR(8);
-			result = (result << 8) | BsR(8);
-			result = (result << 8) | BsR(8);
+			int result = ReadBits(8);
+			result = (result << 8) | ReadBits(8);
+			result = (result << 8) | ReadBits(8);
+			result = (result << 8) | ReadBits(8);
 			return result;
 		}
 
@@ -493,7 +466,7 @@ namespace Tunetoon.BZip2
 			//--- Receive the mapping table ---
 			for (int i = 0; i < 16; i++)
 			{
-				inUse16[i] = (BsR(1) == 1);
+				inUse16[i] = (ReadBits(1) == 1);
 			}
 
 			for (int i = 0; i < 16; i++)
@@ -502,7 +475,7 @@ namespace Tunetoon.BZip2
 				{
 					for (int j = 0; j < 16; j++)
 					{
-						inUse[i * 16 + j] = (BsR(1) == 1);
+						inUse[i * 16 + j] = (ReadBits(1) == 1);
 					}
 				}
 				else
@@ -518,13 +491,13 @@ namespace Tunetoon.BZip2
 			int alphaSize = nInUse + 2;
 
 			//--- Now the selectors ---
-			int nGroups = BsR(3);
-			int nSelectors = BsR(15);
+			int nGroups = ReadBits(3);
+			int nSelectors = ReadBits(15);
 
 			for (int i = 0; i < nSelectors; i++)
 			{
 				int j = 0;
-				while (BsR(1) == 1)
+				while (ReadBits(1) == 1)
 				{
 					j++;
 				}
@@ -554,12 +527,12 @@ namespace Tunetoon.BZip2
 			//--- Now the coding tables ---
 			for (int t = 0; t < nGroups; t++)
 			{
-				int curr = BsR(5);
+				int curr = ReadBits(5);
 				for (int i = 0; i < alphaSize; i++)
 				{
-					while (BsR(1) == 1)
+					while (ReadBits(1) == 1)
 					{
-						if (BsR(1) == 0)
+						if (ReadBits(1) == 0)
 						{
 							curr++;
 						}
@@ -593,7 +566,7 @@ namespace Tunetoon.BZip2
 			int nextSym;
 
 			int limitLast = BZip2Constants.BaseBlockSize * blockSize100k;
-			origPtr = BsGetIntVS(24);
+			origPtr = ReadBits(24);
 
 			RecvDecodingTables();
 			int EOB = nInUse + 1;
@@ -627,7 +600,7 @@ namespace Tunetoon.BZip2
 			groupPos--;
 			int zt = selector[groupNo];
 			int zn = minLens[zt];
-			int zvec = BsR(zn);
+			int zvec = ReadBits(zn);
 			int zj;
 
 			while (zvec > limit[zt][zn])
@@ -637,12 +610,12 @@ namespace Tunetoon.BZip2
 					throw new BZip2Exception("Bzip data error");
 				}
 				zn++;
-				while (bsLive < 1)
+				while (bitCount < 1)
 				{
 					FillBuffer();
 				}
-				zj = (bsBuff >> (bsLive - 1)) & 1;
-				bsLive--;
+				zj = (bitBuffer >> (bitCount - 1)) & 1;
+				bitCount--;
 				zvec = (zvec << 1) | zj;
 			}
 			if (zvec - baseArray[zt][zn] < 0 || zvec - baseArray[zt][zn] >= BZip2Constants.MaximumAlphaSize)
@@ -685,17 +658,17 @@ namespace Tunetoon.BZip2
 
 						zt = selector[groupNo];
 						zn = minLens[zt];
-						zvec = BsR(zn);
+						zvec = ReadBits(zn);
 
 						while (zvec > limit[zt][zn])
 						{
 							zn++;
-							while (bsLive < 1)
+							while (bitCount < 1)
 							{
 								FillBuffer();
 							}
-							zj = (bsBuff >> (bsLive - 1)) & 1;
-							bsLive--;
+							zj = (bitBuffer >> (bitCount - 1)) & 1;
+							bitCount--;
 							zvec = (zvec << 1) | zj;
 						}
 						nextSym = perm[zt][zvec - baseArray[zt][zn]];
@@ -743,16 +716,16 @@ namespace Tunetoon.BZip2
 					groupPos--;
 					zt = selector[groupNo];
 					zn = minLens[zt];
-					zvec = BsR(zn);
+					zvec = ReadBits(zn);
 					while (zvec > limit[zt][zn])
 					{
 						zn++;
-						while (bsLive < 1)
+						while (bitCount < 1)
 						{
 							FillBuffer();
 						}
-						zj = (bsBuff >> (bsLive - 1)) & 1;
-						bsLive--;
+						zj = (bitBuffer >> (bitCount - 1)) & 1;
+						bitCount--;
 						zvec = (zvec << 1) | zj;
 					}
 					nextSym = perm[zt][zvec - baseArray[zt][zn]];
@@ -788,48 +761,7 @@ namespace Tunetoon.BZip2
 			i2 = 0;
 			ch2 = 256;   /*-- not a char and not EOF --*/
 
-			if (blockRandomised)
-			{
-				rNToGo = 0;
-				rTPos = 0;
-				SetupRandPartA();
-			}
-			else
-			{
-				SetupNoRandPartA();
-			}
-		}
-
-		private void SetupRandPartA()
-		{
-			if (i2 <= last)
-			{
-				chPrev = ch2;
-				ch2 = ll8[tPos];
-				tPos = tt[tPos];
-				if (rNToGo == 0)
-				{
-					rNToGo = BZip2Constants.RandomNumbers[rTPos];
-					rTPos++;
-					if (rTPos == 512)
-					{
-						rTPos = 0;
-					}
-				}
-				rNToGo--;
-				ch2 ^= (int)((rNToGo == 1) ? 1 : 0);
-				i2++;
-
-				currentChar = ch2;
-				currentState = RAND_PART_B_STATE;
-				mCrc.Update(ch2);
-			}
-			else
-			{
-				EndBlock();
-				InitBlock();
-				SetupBlock();
-			}
+			SetupNoRandPartA();
 		}
 
 		private void SetupNoRandPartA()
@@ -850,61 +782,6 @@ namespace Tunetoon.BZip2
 				EndBlock();
 				InitBlock();
 				SetupBlock();
-			}
-		}
-
-		private void SetupRandPartB()
-		{
-			if (ch2 != chPrev)
-			{
-				currentState = RAND_PART_A_STATE;
-				count = 1;
-				SetupRandPartA();
-			}
-			else
-			{
-				count++;
-				if (count >= 4)
-				{
-					z = ll8[tPos];
-					tPos = tt[tPos];
-					if (rNToGo == 0)
-					{
-						rNToGo = BZip2Constants.RandomNumbers[rTPos];
-						rTPos++;
-						if (rTPos == 512)
-						{
-							rTPos = 0;
-						}
-					}
-					rNToGo--;
-					z ^= (byte)((rNToGo == 1) ? 1 : 0);
-					j2 = 0;
-					currentState = RAND_PART_C_STATE;
-					SetupRandPartC();
-				}
-				else
-				{
-					currentState = RAND_PART_A_STATE;
-					SetupRandPartA();
-				}
-			}
-		}
-
-		private void SetupRandPartC()
-		{
-			if (j2 < (int)z)
-			{
-				currentChar = ch2;
-				mCrc.Update(ch2);
-				j2++;
-			}
-			else
-			{
-				currentState = RAND_PART_A_STATE;
-				i2++;
-				count = 0;
-				SetupRandPartA();
 			}
 		}
 
