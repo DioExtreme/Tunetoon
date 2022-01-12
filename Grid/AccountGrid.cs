@@ -111,13 +111,22 @@ namespace Tunetoon.Grid
         // Registers the index of the row we want to move
         protected override void OnMouseDown(MouseEventArgs e)
         {
+            var hitInfo = HitTest(e.X, e.Y);
+            int rowIndex = hitInfo.RowIndex;
+            int columnIndex = hitInfo.ColumnIndex;
+
+            if (columnIndex >= 0 && Columns[columnIndex].CellType == typeof(DataGridViewCheckBoxCell) && rowIndex == NewRowIndex)
+            {
+                return;
+            }
+
             if (!MoveMode)
             {
                 base.OnMouseDown(e);
                 return;
             }
 
-            clickedRowIndex = HitTest(e.X, e.Y).RowIndex;
+            clickedRowIndex = rowIndex;
             base.OnMouseDown(e);
         }
 

@@ -333,6 +333,11 @@ namespace Tunetoon.Forms
                 return;
             }
 
+            if (e.ColumnIndex == End.Index && e.RowIndex == accountGrid.NewRowIndex)
+            {
+                return;
+            }
+
             var account = currentAccountList[e.RowIndex];
 
             if (e.ColumnIndex == Toon.Index && !accountGrid.MoveMode)
