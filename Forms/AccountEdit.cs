@@ -56,7 +56,7 @@ namespace Tunetoon.Forms
 
             if (clashAuthorization.LastReason != 0)
             {
-                SaveButton.Text = "Done";
+                SaveButton.Text = "Save";
                 SaveButton.Enabled = true;
                 MessageBox.Show(clashAuthorization.LastMessage, "Server response", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
