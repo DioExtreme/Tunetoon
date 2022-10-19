@@ -24,6 +24,9 @@ namespace Tunetoon.Game
         {
             gameProcess.StartInfo.EnvironmentVariables["LAUNCHER_USER"] = account.Username;
 
+            gameProcess.StartInfo.EnvironmentVariables["REALM"] = "production";
+            gameProcess.StartInfo.EnvironmentVariables["SENTRY_ENVIRONMENT"] = "production";
+
             if (account.ToonSlot != -2)
             {
                 gameProcess.StartInfo.EnvironmentVariables["FORCE_TOON_SLOT"] = account.ToonSlot.ToString();
