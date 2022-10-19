@@ -48,16 +48,16 @@ namespace Tunetoon.Forms
             account.Username = UsernameBox.Text;
             account.Password = PasswordBox.Text;
 
-            DoneButton.Text = "Authorizing...";
-            DoneButton.Enabled = false;
+            SaveButton.Text = "Authorizing...";
+            SaveButton.Enabled = false;
 
             var clashAuthorization = new ClashAuthorization();
             clashAuthorization.AddAccount(account);
 
             if (clashAuthorization.LastReason != 0)
             {
-                DoneButton.Text = "Done";
-                DoneButton.Enabled = true;
+                SaveButton.Text = "Done";
+                SaveButton.Enabled = true;
                 MessageBox.Show(clashAuthorization.LastMessage, "Server response", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }

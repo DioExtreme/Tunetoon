@@ -36,7 +36,7 @@ namespace Tunetoon.Forms
             this.FriendlyBox = new System.Windows.Forms.TextBox();
             this.UsernameBox = new System.Windows.Forms.TextBox();
             this.PasswordBox = new System.Windows.Forms.TextBox();
-            this.DoneButton = new System.Windows.Forms.Button();
+            this.SaveButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -88,23 +88,23 @@ namespace Tunetoon.Forms
             this.PasswordBox.Size = new System.Drawing.Size(179, 20);
             this.PasswordBox.TabIndex = 5;
             // 
-            // DoneButton
+            // SaveButton
             // 
-            this.DoneButton.Location = new System.Drawing.Point(19, 116);
-            this.DoneButton.Name = "DoneButton";
-            this.DoneButton.Size = new System.Drawing.Size(242, 23);
-            this.DoneButton.TabIndex = 6;
-            this.DoneButton.Text = "Done";
-            this.DoneButton.UseVisualStyleBackColor = true;
-            this.DoneButton.Click += new System.EventHandler(this.DoneButton_Click);
+            this.SaveButton.Location = new System.Drawing.Point(19, 116);
+            this.SaveButton.Name = "SaveButton";
+            this.SaveButton.Size = new System.Drawing.Size(242, 23);
+            this.SaveButton.TabIndex = 6;
+            this.SaveButton.Text = "Save";
+            this.SaveButton.UseVisualStyleBackColor = true;
+            this.SaveButton.Click += new System.EventHandler(this.DoneButton_Click);
             // 
             // AccountEdit
             // 
-            this.AcceptButton = this.DoneButton;
+            this.AcceptButton = this.SaveButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(273, 144);
-            this.Controls.Add(this.DoneButton);
+            this.Controls.Add(this.SaveButton);
             this.Controls.Add(this.PasswordBox);
             this.Controls.Add(this.UsernameBox);
             this.Controls.Add(this.FriendlyBox);
@@ -131,6 +131,6 @@ namespace Tunetoon.Forms
         private System.Windows.Forms.TextBox FriendlyBox;
         private System.Windows.Forms.TextBox UsernameBox;
         private System.Windows.Forms.TextBox PasswordBox;
-        private System.Windows.Forms.Button DoneButton;
+        private System.Windows.Forms.Button SaveButton;
     }
 }
