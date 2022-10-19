@@ -14,7 +14,7 @@ Download from [Releases](https://github.com/DioExtreme/Tunetoon/releases)
 - Game patching for both servers
 - Indicator for logged in accounts
 - End game instances with a click
-- Toon and district select for Corporate Clash
+- Toon select for Corporate Clash
 - Accounts are auto-saved and secured with DPAPI
 - Account data is non-transferrable to another computer for security reasons
 
