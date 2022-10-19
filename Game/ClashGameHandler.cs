@@ -28,13 +28,6 @@ namespace Tunetoon.Game
             {
                 gameProcess.StartInfo.EnvironmentVariables["FORCE_TOON_SLOT"] = account.ToonSlot.ToString();
             }
-
-            string district = config.ClashDistrict;
-
-            if (district != null)
-            {
-                gameProcess.StartInfo.EnvironmentVariables["FORCE_DISTRICT"] = district;
-            }
         }
 
         public override void StartGame(ClashAccount account)

@@ -39,14 +39,12 @@
             this.RewrittenPathButton = new System.Windows.Forms.Button();
             this.ClashPathButton = new System.Windows.Forms.Button();
             this.SkipUpdatesCheckBox = new System.Windows.Forms.CheckBox();
-            this.ClashDistrictCheckBox = new System.Windows.Forms.CheckBox();
-            this.DistrictComboBox = new System.Windows.Forms.ComboBox();
             this.EncryptAccsCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // OkayButton
             // 
-            this.OkayButton.Location = new System.Drawing.Point(12, 198);
+            this.OkayButton.Location = new System.Drawing.Point(12, 174);
             this.OkayButton.Name = "OkayButton";
             this.OkayButton.Size = new System.Drawing.Size(483, 23);
             this.OkayButton.TabIndex = 0;
@@ -136,29 +134,10 @@
             this.SkipUpdatesCheckBox.Text = "Skip game updates";
             this.SkipUpdatesCheckBox.UseVisualStyleBackColor = true;
             // 
-            // ClashDistrictCheckBox
-            // 
-            this.ClashDistrictCheckBox.AutoSize = true;
-            this.ClashDistrictCheckBox.Location = new System.Drawing.Point(15, 141);
-            this.ClashDistrictCheckBox.Name = "ClashDistrictCheckBox";
-            this.ClashDistrictCheckBox.Size = new System.Drawing.Size(172, 17);
-            this.ClashDistrictCheckBox.TabIndex = 15;
-            this.ClashDistrictCheckBox.Text = "(Clash) Start all toons in district:";
-            this.ClashDistrictCheckBox.UseVisualStyleBackColor = true;
-            this.ClashDistrictCheckBox.CheckedChanged += new System.EventHandler(this.ClashDistrictCheckBox_CheckedChanged);
-            // 
-            // DistrictComboBox
-            // 
-            this.DistrictComboBox.FormattingEnabled = true;
-            this.DistrictComboBox.Location = new System.Drawing.Point(15, 164);
-            this.DistrictComboBox.Name = "DistrictComboBox";
-            this.DistrictComboBox.Size = new System.Drawing.Size(160, 21);
-            this.DistrictComboBox.TabIndex = 16;
-            // 
             // EncryptAccsCheckBox
             // 
             this.EncryptAccsCheckBox.AutoSize = true;
-            this.EncryptAccsCheckBox.Location = new System.Drawing.Point(341, 164);
+            this.EncryptAccsCheckBox.Location = new System.Drawing.Point(15, 141);
             this.EncryptAccsCheckBox.Name = "EncryptAccsCheckBox";
             this.EncryptAccsCheckBox.Size = new System.Drawing.Size(109, 17);
             this.EncryptAccsCheckBox.TabIndex = 17;
@@ -169,10 +148,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(508, 228);
+            this.ClientSize = new System.Drawing.Size(508, 200);
             this.Controls.Add(this.EncryptAccsCheckBox);
-            this.Controls.Add(this.DistrictComboBox);
-            this.Controls.Add(this.ClashDistrictCheckBox);
             this.Controls.Add(this.SkipUpdatesCheckBox);
             this.Controls.Add(this.ClashPathButton);
             this.Controls.Add(this.RewrittenPathButton);
@@ -209,8 +186,6 @@
         private System.Windows.Forms.Button RewrittenPathButton;
         private System.Windows.Forms.Button ClashPathButton;
         private System.Windows.Forms.CheckBox SkipUpdatesCheckBox;
-        private System.Windows.Forms.CheckBox ClashDistrictCheckBox;
-        private System.Windows.Forms.ComboBox DistrictComboBox;
         private System.Windows.Forms.CheckBox EncryptAccsCheckBox;
     }
 }

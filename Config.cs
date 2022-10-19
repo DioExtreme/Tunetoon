@@ -14,8 +14,6 @@ namespace Tunetoon
 
         public string ClashPath { get; set; } = GetFolderPath(SpecialFolder.LocalApplicationData) + "\\Corporate Clash\\";
 
-        public string ClashDistrict;
-
         public bool SkipUpdates { get; set; }
 
         public bool SelectEndGames { get; set; }
