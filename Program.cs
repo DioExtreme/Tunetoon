@@ -24,7 +24,7 @@ namespace Tunetoon
             Directory.SetCurrentDirectory(Application.StartupPath);
 
             Application.EnableVisualStyles();
-            Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
+            Application.SetHighDpiMode(HighDpiMode.DpiUnawareGdiScaled);
             Application.SetCompatibleTextRenderingDefault(false);
 
             Application.Run(new Launcher());
