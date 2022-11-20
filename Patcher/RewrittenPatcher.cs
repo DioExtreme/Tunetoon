@@ -59,7 +59,7 @@ namespace Tunetoon.Patcher
             patchProgress.NewWork(progress, patchManifest.Count);
             string gamePath = config.RewrittenPath;
 
-            foreach (var file in patchManifest)
+            Parallel.ForEach(patchManifest, file =>
             {
                 RewrittenFile fileObject = file.Value;
 
@@ -68,7 +68,7 @@ namespace Tunetoon.Patcher
 
                 if (!fileObject.Only.Contains("win64"))
                 {
-                    continue;
+                    return;
                 }
 
                 bool hasPatchAvailable = false;
@@ -80,7 +80,7 @@ namespace Tunetoon.Patcher
 
                     if (fileHash == fileObject.Hash)
                     {
-                        continue;
+                        return;
                     }
 
                     foreach (var patch in fileObject.Patches)
@@ -89,7 +89,10 @@ namespace Tunetoon.Patcher
                         {
                             hasPatchAvailable = true;
                             patch.Value.FinalFileHash = fileObject.Hash;
-                            filesToUpdate.Add(file.Key, patch.Value);
+                            lock (filesToUpdate)
+                            {
+                                filesToUpdate.Add(file.Key, patch.Value);
+                            }
                             break;
                         }
                     }
@@ -97,9 +100,12 @@ namespace Tunetoon.Patcher
 
                 if (!hasPatchAvailable)
                 {
-                    filesNeeded.Add(file.Key, file.Value);
+                    lock (filesNeeded)
+                    {
+                        filesNeeded.Add(file.Key, file.Value);
+                    }
                 }
-            }
+            });
         }
 
         private async Task AcquireFileAsync(string fileToDownload, string compHash)

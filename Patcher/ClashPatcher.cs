@@ -55,8 +55,8 @@ namespace Tunetoon.Patcher
             string gamePath = config.ClashPath;
             patchProgress.NewWork(progress, patchManifest.Count);
 
-            foreach (var file in patchManifest)
-            { 
+            Parallel.ForEach(patchManifest, file =>
+            {
                 string localFilePath = gamePath + file.FilePath;
 
                 // meh
@@ -68,11 +68,14 @@ namespace Tunetoon.Patcher
 
                     if (fileHash == file.Sha1)
                     {
-                        continue;
+                        return;
                     }
                 }
-                filesNeeded.Add(file);
-            }
+                lock (filesNeeded)
+                {
+                    filesNeeded.Add(file);
+                }
+            });
         }
 
         private async Task AcquireFileAsync(ClashFile file)
