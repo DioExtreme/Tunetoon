@@ -2,7 +2,7 @@
 
 Tunetoon is an alternative multi toon launcher for Toontown Rewritten and Corporate Clash.
 
-<img src="https://i.imgur.com/bt1jqpr.png" width = 500>
+<img src="https://i.imgur.com/lXs0Pny_d.png?maxwidth=650&fidelity=grand">
 
 It is **preferred** that the games be installed with their official setups prior to using this.
 
@@ -22,16 +22,20 @@ Download from [Releases](https://github.com/DioExtreme/Tunetoon/releases)
 
 This program only works with Windows 7 and newer versions.
 
+In all cases, MacOS and Linux are unsupported due to Windows Forms being used in the project.
+
+### For versions older than v2.0.0.0:
+
 Windows versions older than Windows 10 May Update 2019 need [.NET Framework 4.8](https://dotnet.microsoft.com/download/dotnet-framework/thank-you/net48-web-installer)
 
-Mac and Linux unsupported due to WinForms. You may have luck with Wine.
+### For versions v2.0.0.0 or higher:
+
+[.NET 7](https://dotnet.microsoft.com/download/dotnet-framework/thank-you/net48-web-installer) is required.
 
 ## Building
 Open the solution (.sln) in Visual Studio and build for "Release".
 
-The minimum .NET Framework version for this project is 4.6
-
-By default, the project targets 4.8
+The project currently targets .NET 7.
 
 ## License
 See the LICENSE.txt file.
