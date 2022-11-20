@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text.Json;
 using Tunetoon.Accounts;
 using Tunetoon.Login;
 using Tunetoon.Login.Authorization;
@@ -54,7 +54,7 @@ namespace Tunetoon
                 var response = httpClient.SendAsync(request).Result;
                 string responseString = response.Content.ReadAsStringAsync().Result;
 
-                var authObject = JsonConvert.DeserializeObject<ClashAuthorizationResult>(responseString);
+                var authObject = JsonSerializer.Deserialize<ClashAuthorizationResult>(responseString);
 
                 if (authObject.Status)
                 {
@@ -80,7 +80,7 @@ namespace Tunetoon
 
                 var response = httpClient.SendAsync(request).Result;
                 string responseString = response.Content.ReadAsStringAsync().Result;
-                account.LoginResult = JsonConvert.DeserializeObject<ClashLoginResult>(responseString);
+                account.LoginResult = JsonSerializer.Deserialize<ClashLoginResult>(responseString);
             }
         }
 

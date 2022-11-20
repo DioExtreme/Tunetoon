@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using Tunetoon.Utilities;
 
 namespace Tunetoon.Accounts

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Newtonsoft.Json;
 using Tunetoon.Accounts;
+using System.Text.Json;
 
 namespace Tunetoon.Utilities
 {
@@ -70,7 +70,7 @@ namespace Tunetoon.Utilities
                 File.Delete(file);
             }
 
-            var obj = JsonConvert.DeserializeObject<T>(json);
+            var obj = JsonSerializer.Deserialize<T>(json);
 
             if (obj == null)
             {
@@ -150,7 +150,7 @@ namespace Tunetoon.Utilities
 
             try
             {
-                toons = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, int>>>(json);
+                toons = JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, int>>>(json);
             }
             catch
             {
@@ -167,11 +167,13 @@ namespace Tunetoon.Utilities
 
         private void WriteObjectToFile<T>(T obj, string file)
         {
+            var options = new JsonSerializerOptions { WriteIndented = true };
+
             try
             {
                 using (var sw = new StreamWriter(file))
                 {
-                    sw.Write(JsonConvert.SerializeObject(obj, Formatting.Indented));
+                    sw.Write(JsonSerializer.Serialize(obj, options));
                 }
             }
             catch
@@ -183,7 +185,7 @@ namespace Tunetoon.Utilities
                 string criticalFile = $"{criticalDirectory}{file}";
                 using (var sw = new StreamWriter(criticalFile))
                 {
-                    sw.Write(JsonConvert.SerializeObject(obj, Formatting.Indented));
+                    sw.Write(JsonSerializer.Serialize(obj, options));
                 }
             }
         }

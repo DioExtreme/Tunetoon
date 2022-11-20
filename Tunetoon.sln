@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31112.23
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tunetoon", "Tunetoon.csproj", "{3195DDC3-50B8-4388-9EF2-BBE2CFBF3997}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tunetoon", "Tunetoon.csproj", "{3195DDC3-50B8-4388-9EF2-BBE2CFBF3997}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,8 +13,8 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{3195DDC3-50B8-4388-9EF2-BBE2CFBF3997}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{3195DDC3-50B8-4388-9EF2-BBE2CFBF3997}.Debug|x64.Build.0 = Debug|Any CPU
-		{3195DDC3-50B8-4388-9EF2-BBE2CFBF3997}.Release|x64.ActiveCfg = Release|x64
-		{3195DDC3-50B8-4388-9EF2-BBE2CFBF3997}.Release|x64.Build.0 = Release|x64
+		{3195DDC3-50B8-4388-9EF2-BBE2CFBF3997}.Release|x64.ActiveCfg = Release|Any CPU
+		{3195DDC3-50B8-4388-9EF2-BBE2CFBF3997}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

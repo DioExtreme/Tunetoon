@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Tunetoon.Accounts;
@@ -22,7 +22,7 @@ namespace Tunetoon.Login
                 request.Content = new FormUrlEncodedContent(data);
                 var response = httpClient.SendAsync(request).Result;
                 string responseString = response.Content.ReadAsStringAsync().Result;
-                account.LoginResult = JsonConvert.DeserializeObject<RewrittenLoginResult>(responseString);
+                account.LoginResult = JsonSerializer.Deserialize<RewrittenLoginResult>(responseString);
             }
             HandleAuthResponse(account);
         }

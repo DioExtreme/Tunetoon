@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Tunetoon.Patcher
@@ -34,12 +34,12 @@ namespace Tunetoon.Patcher
             {
                 // Windows specific
                 string json = httpClient.GetStringAsync(WinManifest).Result;
-                var manifest = JsonConvert.DeserializeObject<ClashManifest>(json);
+                var manifest = JsonSerializer.Deserialize<ClashManifest>(json);
                 patchManifest.AddRange(manifest.Files);
 
                 // Resources
                 json = httpClient.GetStringAsync(ResourceManifest).Result;
-                manifest = JsonConvert.DeserializeObject<ClashManifest>(json);
+                manifest = JsonSerializer.Deserialize<ClashManifest>(json);
                 patchManifest.AddRange(manifest.Files);
             }
             catch

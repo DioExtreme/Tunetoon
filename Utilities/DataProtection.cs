@@ -5,16 +5,15 @@ using Microsoft.Win32;
 
 namespace Tunetoon.Utilities
 {
+    #pragma warning disable CA1416
+
     internal static class DataProtection {
         private static byte[] _usernameEntropy = new byte[32];
         private static byte[] _passwordEntropy = new byte[32];
         public static void MakeEntropy()
         {   
-            using (var rng = new RNGCryptoServiceProvider())
-            {
-                rng.GetBytes(_usernameEntropy);
-                rng.GetBytes(_passwordEntropy);
-            }
+            RandomNumberGenerator.Fill(_usernameEntropy);
+            RandomNumberGenerator.Fill(_passwordEntropy);
 
             var key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\DioExtreme\Tunetoon");
             key.SetValue("Candy", _usernameEntropy);

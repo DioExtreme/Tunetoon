@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Text;
@@ -9,47 +10,13 @@ namespace Tunetoon
 {
     internal static class GamePatchUtils 
     {
-        private static readonly uint[] ByteLookupArray = CreateByteLookupArray();
-
-        private static uint[] CreateByteLookupArray()
-        {
-            var byteLookupArray = new uint[256];
-            for (int i = 0; i < 256; ++i)
-            {
-                string byteString = i.ToString("x2");
-                // Chars are in UTF-16 so 16 bits here
-                char highNibble = byteString[0];
-                char lowNibble = byteString[1];
-                byteLookupArray[i] = highNibble + (uint)(lowNibble << 16);
-            }
-            return byteLookupArray;
-        }
-
-        private static string HexSHA1(byte[] bytes)
-        {
-            // SHA-1 has 20 bytes, therefore 40 in hex
-            int hexStringLength = 40;
-
-            var hexArray = new char[hexStringLength];
-            for (int i = 0; i < bytes.Length; ++i)
-            {
-                uint uintValue = ByteLookupArray[bytes[i]];
-                char highNibble = (char)uintValue;
-                char lowNibble = (char)(uintValue >> 16);
-                hexArray[2 * i] = highNibble;
-                hexArray[2 * i + 1] = lowNibble;
-            }
-            return new string(hexArray);
-        }
-
         public static string GetSha1FileHash(string filepath)
         {
             try
             {
                 using (var fs = new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.Read, 65536))
-                using (var sha1Cng = new SHA1Cng())
                 {
-                    return HexSHA1(sha1Cng.ComputeHash(fs));
+                    return Convert.ToHexString(SHA1.HashData(fs)).ToLower();
                 }
             }
             catch
@@ -62,10 +29,7 @@ namespace Tunetoon
         {
             try
             {
-                using (var sha1Cng = new SHA1Cng())
-                {
-                    return HexSHA1(sha1Cng.ComputeHash(Encoding.UTF8.GetBytes(str)));
-                }
+                return Convert.ToHexString(SHA1.HashData(Encoding.UTF8.GetBytes(str))).ToLower();
             }
             catch
             {

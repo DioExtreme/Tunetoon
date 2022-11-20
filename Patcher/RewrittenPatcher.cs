@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Tunetoon.Patcher
@@ -31,7 +31,7 @@ namespace Tunetoon.Patcher
             try
             {
                 string json = httpClient.GetStringAsync(UpdateUrl + "/content/patchmanifest.txt").Result;
-                patchManifest = JsonConvert.DeserializeObject<Dictionary<string, RewrittenFile>>(json);
+                patchManifest = JsonSerializer.Deserialize<Dictionary<string, RewrittenFile>>(json);
             }
             catch
             {
@@ -44,7 +44,7 @@ namespace Tunetoon.Patcher
             try
             {
                 string json = httpClient.GetStringAsync(UpdateUrl + "/mirrors.txt").Result;
-                mirrors = JsonConvert.DeserializeObject<List<string>>(json);
+                mirrors = JsonSerializer.Deserialize<List<string>>(json);
             }
             catch
             {

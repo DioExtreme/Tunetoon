@@ -1,16 +1,19 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace Tunetoon.Login.Authorization
 {
     public class ClashAuthorizationResult
     {
-        public bool Status;
-        public int Reason;
-        public string Friendlyreason;
-        public string Message;
-        public string Token;
+        [JsonPropertyName("status")]
+        public bool Status { get; set; }
+        [JsonPropertyName("reason")]
+        public int Reason { get; set; }
+        [JsonPropertyName("message")]
+        public string Message { get; set; }
+        [JsonPropertyName("token")]
+        public string Token { get; set; }
 
-        [JsonProperty(PropertyName = "bad_token")]
-        public bool BadToken;
+        [JsonPropertyName("bad_token")]
+        public bool BadToken { get; set; }
     }
 }
