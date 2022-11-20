@@ -6,7 +6,7 @@ namespace Tunetoon.Accounts
 {
     public class ClashAccount : Account
     {
-        public bool Authorized = false;
+        public bool Authorized { get; set; } = false;
         public string LoginToken { get; set; }
 
         [JsonIgnore]
@@ -19,6 +19,6 @@ namespace Tunetoon.Accounts
             {-2, "Main Menu"}
         };
 
-        public int ToonSlot;
+        public int ToonSlot { get; set; }
     }
 }
