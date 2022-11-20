@@ -3,7 +3,8 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Win32;
 
-namespace Tunetoon.Utilities {
+namespace Tunetoon.Utilities
+{
     internal static class DataProtection {
         private static byte[] _usernameEntropy = new byte[32];
         private static byte[] _passwordEntropy = new byte[32];

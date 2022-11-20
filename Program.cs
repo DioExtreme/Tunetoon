@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Windows.Forms;
 using Tunetoon.Forms;
 
-namespace Tunetoon 
+namespace Tunetoon
 {
     internal static class Program 
     {

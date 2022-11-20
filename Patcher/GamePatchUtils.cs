@@ -5,7 +5,8 @@ using System.Text;
 using Tunetoon.BZip2;
 using Tunetoon.Utilities;
 
-namespace Tunetoon {
+namespace Tunetoon
+{
     internal static class GamePatchUtils 
     {
         public static string GetSha1FileHash(string filepath)

@@ -2,7 +2,7 @@
 
 namespace Tunetoon
 {
-     public enum Server { Rewritten, Clash }
+    public enum Server { Rewritten, Clash }
 
      public class Config
      {  
