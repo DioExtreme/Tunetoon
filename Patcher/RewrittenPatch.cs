@@ -5,12 +5,12 @@ namespace Tunetoon.Patcher
     public class RewrittenPatch
     {
         // Retrieved from manifest
-        [JsonPropertyName("fileName")]
-        public string Filename;
+        [JsonPropertyName("filename")]
+        public string Filename { get; set; }
         [JsonPropertyName("compPatchHash")]
-        public string CompPatchHash;
+        public string CompPatchHash { get; set; }
         [JsonPropertyName("patchHash")]
-        public string PatchHash;
+        public string PatchHash { get; set; }
 
         // Added during file scanning
         public string FinalFileHash;
