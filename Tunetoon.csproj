@@ -40,6 +40,9 @@
     <Description>A multi-toon launcher</Description>
     <Copyright>Copyright © 2017-2022 Null / DioExtreme</Copyright>
     <Company>Null / DioExtreme</Company>
+    <Title>Tunetoon</Title>
+    <PackageProjectUrl>https://github.com/DioExtreme</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/DioExtreme/Tunetoon</RepositoryUrl>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebugType>full</DebugType>
