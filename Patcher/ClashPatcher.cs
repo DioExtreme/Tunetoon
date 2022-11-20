@@ -18,7 +18,13 @@ namespace Tunetoon.Patcher
         public ClashPatcher(Config config)
         {
             this.config = config;
-            Initialize(config.ClashPath);
+        }
+
+        public override void Initialize(string directory)
+        {
+            filesNeeded.Clear();
+
+            base.Initialize(directory);
         }
 
         public override string GetGameDirectory()

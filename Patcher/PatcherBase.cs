@@ -19,7 +19,7 @@ namespace Tunetoon.Patcher
         protected PatchProgress patchProgress = new PatchProgress();
         protected PatcherStatus status;
 
-        public void Initialize(string directory)
+        public virtual void Initialize(string directory)
         {
             if (Directory.Exists(directory))
             {

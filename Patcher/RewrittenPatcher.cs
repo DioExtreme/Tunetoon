@@ -21,6 +21,14 @@ namespace Tunetoon.Patcher
             this.config = config;
         }
 
+        public override void Initialize(string directory)
+        {
+            filesToUpdate.Clear();
+            filesNeeded.Clear();
+
+            base.Initialize(directory);
+        }
+
         public override string GetGameDirectory()
         {
             return config.RewrittenPath;
