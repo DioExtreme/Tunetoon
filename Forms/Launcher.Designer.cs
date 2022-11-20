@@ -184,7 +184,7 @@ namespace Tunetoon.Forms
             // 
             // ToonSlots
             // 
-            this.ToonSlots.HeaderText = "Select Toon";
+            this.ToonSlots.HeaderText = "Jump to";
             this.ToonSlots.Name = "ToonSlots";
             this.ToonSlots.Width = 125;
             // 
