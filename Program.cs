@@ -19,7 +19,7 @@ namespace Tunetoon
             const string Github = "https://github.com/DioExtreme/Tunetoon";
             HttpClient.DefaultRequestHeaders.Add("User-Agent", $"Tunetoon - A multi-toon launcher. ({Github})");
 
-            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
             AppDomain.CurrentDomain.UnhandledException += App_UnhandledException;
             Directory.SetCurrentDirectory(Application.StartupPath);
 
