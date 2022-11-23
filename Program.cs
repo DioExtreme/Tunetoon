@@ -27,7 +27,7 @@ namespace Tunetoon
             Application.SetHighDpiMode(HighDpiMode.DpiUnawareGdiScaled);
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Application.Run(new Launcher());
+            Application.Run(new Launcher());            
         }
 
         private static void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
