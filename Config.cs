@@ -8,7 +8,7 @@ namespace Tunetoon
      {  
         public Server GameServer { get; set; } = Server.Rewritten;
 
-        public bool EncryptAccounts { get; set; } = true;
+        public bool EncryptAccounts { get; set; } = false;
 
         public string RewrittenPath { get; set; } = GetFolderPath(SpecialFolder.ProgramFilesX86) + "\\Toontown Rewritten\\";
 
