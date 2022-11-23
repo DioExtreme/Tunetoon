@@ -22,6 +22,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>Tunetoon.Program</StartupObject>
@@ -48,7 +49,7 @@
     <DebugType>full</DebugType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DebugType>embedded</DebugType>
+    <DebugType>none</DebugType>
   </PropertyGroup>
   <ItemGroup>
     <Compile Update="Grid\AccountGrid.cs">
