@@ -1,15 +1,13 @@
-﻿using static System.Environment;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using Tunetoon.Accounts;
 using System.Text.Json;
+using Tunetoon.Encrypt;
 
 namespace Tunetoon.Utilities
 {
     class DataHandler
     {
-        private readonly string criticalDirectory = GetFolderPath(SpecialFolder.LocalApplicationData) + "\\DioExtreme\\Rescue\\";
         private Dictionary<string, Dictionary<string, int>> clashIngameToons;
 
         public void FindClashIngameToons(ClashAccount account)
@@ -46,15 +44,7 @@ namespace Tunetoon.Utilities
 
         public T Deserialize<T>(string file) where T : new()
         {
-            bool deleteAfter = false;
-            string criticalFile = $"{criticalDirectory}{file}";
-
-            if (File.Exists(criticalFile))
-            {
-                file = criticalFile;
-                deleteAfter = true;
-            }
-            else if (!File.Exists(file))
+            if (!File.Exists(file))
             {
                 return new T();
             }
@@ -63,11 +53,6 @@ namespace Tunetoon.Utilities
             using (var sr = new StreamReader(file))
             {
                 json = sr.ReadToEnd();
-            }
-
-            if (deleteAfter)
-            {
-                File.Delete(file);
             }
 
             var obj = JsonSerializer.Deserialize<T>(json);
@@ -80,50 +65,10 @@ namespace Tunetoon.Utilities
             return obj;
         }
 
-        public void DecryptBase(Account account)
+        public AccountList<T> LoadEncrypted<T>(string masterPassword, string file) where T : Account
         {
-            if (account.Username != null)
-            {
-                account.Username = DataProtection.Decrypt(account.Username, false);
-            }
-            if (account.Password != null)
-            {
-                account.Password = DataProtection.Decrypt(account.Password, true);
-            }
-        }
-
-        public void LoadAccounts(ref AccountList<RewrittenAccount> accountList, string file)
-        {
-            accountList = Deserialize<AccountList<RewrittenAccount>>(file);
-
-            foreach (var acc in accountList)
-            {
-                DecryptBase(acc);
-            }
-        }
-
-        public void LoadAccounts(ref AccountList<ClashAccount> accountList, string file)
-        {
-            accountList = Deserialize<AccountList<ClashAccount>>(file);
-
-            foreach (var account in accountList)
-            {
-                DecryptBase(account);
-                if (account.LoginToken != null)
-                {
-                    account.LoginToken = DataProtection.Decrypt(account.LoginToken, true);
-                    if (account.LoginToken == null)
-                    {
-                        account.ToonSlot = 0;
-                        account.Authorized = false;
-                    }
-                }
-                else
-                {
-                    account.ToonSlot = 0;
-                    account.Authorized = false;
-                }
-            }
+            string json = DataProtection.ReadJsonFromEncryptedFile(masterPassword, file);
+            return JsonSerializer.Deserialize<AccountList<T>>(json);
         }
 
         public Config LoadConfig(string file)
@@ -178,15 +123,20 @@ namespace Tunetoon.Utilities
             }
             catch
             {
-                if (!Directory.Exists(criticalDirectory))
-                {
-                    Directory.CreateDirectory(criticalDirectory);
-                }
-                string criticalFile = $"{criticalDirectory}{file}";
-                using (var sw = new StreamWriter(criticalFile))
-                {
-                    sw.Write(JsonSerializer.Serialize(obj, options));
-                }
+               // ignored
+            }
+        }
+
+        private void WriteObjectToEncryptedFile<T>(T obj, string file)
+        {
+            byte[] jsonBytes = JsonSerializer.SerializeToUtf8Bytes(obj);
+            try
+            {
+                DataProtection.WriteJsonToEncryptedFile(jsonBytes, file);
+            }
+            catch
+            {
+                throw;
             }
         }
 
@@ -200,38 +150,9 @@ namespace Tunetoon.Utilities
             WriteObjectToFile(accountList, file);
         }
 
-        public void EncryptBase(Account account)
+        public void SaveEncrypted<T>(AccountList<T> accountList, string file) where T : Account
         {
-            if (account.Username != null)
-            {
-                account.Username = DataProtection.Encrypt(Encoding.UTF8.GetBytes(account.Username), false);
-            }
-            if (account.Password != null)
-            {
-                account.Password = DataProtection.Encrypt(Encoding.UTF8.GetBytes(account.Password), true);
-            }
-        }
-
-        public void SaveAccounts(AccountList<RewrittenAccount> accountList, string file)
-        {
-            foreach (var acc in accountList)
-            {
-                EncryptBase(acc);
-            }
-            SaveSerialized(accountList, file);
-        }
-
-        public void SaveAccounts(AccountList<ClashAccount> accountList, string file)
-        {
-            foreach (var account in accountList)
-            {
-                EncryptBase(account);   
-                if (account.LoginToken != null)
-                {
-                    account.LoginToken = DataProtection.Encrypt(Encoding.UTF8.GetBytes(account.LoginToken), true);
-                }
-            }
-            SaveSerialized(accountList, file);
+            WriteObjectToEncryptedFile(accountList, file);
         }
     }
 }

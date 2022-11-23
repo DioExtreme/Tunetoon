@@ -66,7 +66,8 @@ namespace Tunetoon.Forms
             this.untickAllMenuItem});
             this.TopMenu.Location = new System.Drawing.Point(0, 0);
             this.TopMenu.Name = "TopMenu";
-            this.TopMenu.Size = new System.Drawing.Size(534, 24);
+            this.TopMenu.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
+            this.TopMenu.Size = new System.Drawing.Size(623, 24);
             this.TopMenu.TabIndex = 0;
             this.TopMenu.Text = "TopMenu";
             this.TopMenu.Click += new System.EventHandler(this.TopMenu_Click);
@@ -134,9 +135,10 @@ namespace Tunetoon.Forms
             // 
             // LoginButton
             // 
-            this.LoginButton.Location = new System.Drawing.Point(12, 283);
+            this.LoginButton.Location = new System.Drawing.Point(14, 327);
+            this.LoginButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.LoginButton.Name = "LoginButton";
-            this.LoginButton.Size = new System.Drawing.Size(514, 25);
+            this.LoginButton.Size = new System.Drawing.Size(600, 29);
             this.LoginButton.TabIndex = 2;
             this.LoginButton.Text = "Play";
             this.LoginButton.UseVisualStyleBackColor = true;
@@ -155,11 +157,12 @@ namespace Tunetoon.Forms
             this.ToonSlots,
             this.End});
             this.accountGrid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.accountGrid.Location = new System.Drawing.Point(12, 27);
+            this.accountGrid.Location = new System.Drawing.Point(14, 31);
+            this.accountGrid.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.accountGrid.Name = "accountGrid";
             this.accountGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.accountGrid.ShowCellToolTips = false;
-            this.accountGrid.Size = new System.Drawing.Size(514, 250);
+            this.accountGrid.Size = new System.Drawing.Size(600, 288);
             this.accountGrid.TabIndex = 3;
             this.accountGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.AccGrid_OnCellDoubleClick);
             this.accountGrid.CellMouseUp += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.AccGrid_OnCellMouseUp);
@@ -204,19 +207,21 @@ namespace Tunetoon.Forms
             // Launcher
             // 
             this.AcceptButton = this.LoginButton;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(534, 314);
+            this.ClientSize = new System.Drawing.Size(623, 362);
             this.Controls.Add(this.accountGrid);
             this.Controls.Add(this.LoginButton);
             this.Controls.Add(this.TopMenu);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.TopMenu;
+            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.MaximizeBox = false;
             this.Name = "Launcher";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Tunetoon";
+            this.Load += new System.EventHandler(this.Launcher_Load);
             this.Shown += new System.EventHandler(this.Launcher_Shown);
             this.TopMenu.ResumeLayout(false);
             this.TopMenu.PerformLayout();

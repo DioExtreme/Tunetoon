@@ -5,6 +5,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Tunetoon.Accounts;
+using Tunetoon.Encrypt;
 using Tunetoon.Game;
 using Tunetoon.Grid;
 using Tunetoon.Login;
@@ -49,33 +50,33 @@ namespace Tunetoon.Forms
 
         public Launcher()
         {
-            bindingSource.ListChanged += BindingSource_ListChanged;
-
             config = dataHandler.LoadConfig("Config.json");
+            dataHandler.LoadClashIngameToons(config);
+
+            bindingSource.ListChanged += BindingSource_ListChanged;
+            accountEdit.Edited += AccountEditComplete;
+
+            InitializeComponent();
+        }
+
+        private void Launcher_Load(object sender, EventArgs e)
+        {
+            var accountDecryptor = new AccountDecryptor();
+            accountDecryptor.OnPassedAuthentication += onPassedAuthentication;
+            accountDecryptor.Authenticate(config);
+        }
+
+        public void onPassedAuthentication(AccountList<RewrittenAccount> rewrittenAccountList, AccountList<ClashAccount> clashAccountList)
+        {
+            this.rewrittenAccountList = rewrittenAccountList;
+            this.clashAccountList = clashAccountList;
+
+            dataHandler.FindClashIngameToons(clashAccountList);
 
             rewrittenPatcher = new RewrittenPatcher(config);
             clashPatcher = new ClashPatcher(config);
             rewrittenGameHandler = new RewrittenGameHandler(config);
             clashGameHandler = new ClashGameHandler(config);
-
-            dataHandler.LoadClashIngameToons(config);
-
-            if (config.EncryptAccounts)
-            {
-                DataProtection.LoadEntropy();
-                dataHandler.LoadAccounts(ref rewrittenAccountList, "AccListRewritten.nully");
-                dataHandler.LoadAccounts(ref clashAccountList, "AccListClash.nully");
-            }
-            else
-            {
-                rewrittenAccountList = dataHandler.Deserialize<AccountList<RewrittenAccount>>("AccListRewritten.nully");
-                clashAccountList = dataHandler.Deserialize<AccountList<ClashAccount>>("AccListClash.nully");
-            }
-            dataHandler.FindClashIngameToons(clashAccountList);
-
-            accountEdit.Edited += AccountEditComplete;
-
-            InitializeComponent();
 
             HandleConfig();
 
@@ -282,18 +283,22 @@ namespace Tunetoon.Forms
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
+            if (e.CloseReason != CloseReason.UserClosing && e.CloseReason != CloseReason.WindowsShutDown)
+            {
+                return;
+            }
+
             dataHandler.SaveConfig(config, "Config.json");
 
             if (config.EncryptAccounts)
             {
-                DataProtection.MakeEntropy();
-                dataHandler.SaveAccounts(rewrittenAccountList, "AccListRewritten.nully");
-                dataHandler.SaveAccounts(clashAccountList, "AccListClash.nully");
+                dataHandler.SaveEncrypted(rewrittenAccountList, Constants.ENCRYPTED_REWRITTEN_ACCOUNT_FILE_NAME);
+                dataHandler.SaveEncrypted(clashAccountList, Constants.ENCRYPTED_CLASH_ACCOUNT_FILE_NAME);
             }
             else
             {
-                dataHandler.SaveSerialized(rewrittenAccountList, "AccListRewritten.nully");
-                dataHandler.SaveSerialized(clashAccountList, "AccListClash.nully");
+                dataHandler.SaveSerialized(rewrittenAccountList, Constants.REWRITTEN_ACCOUNT_FILE_NAME);
+                dataHandler.SaveSerialized(clashAccountList, Constants.CLASH_ACCOUNT_FILE_NAME);
             }
 
             base.OnFormClosing(e);

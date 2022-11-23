@@ -8,6 +8,7 @@ namespace Tunetoon.Forms
         private Launcher launcherWnd;
         private Config config;
         private bool endSelectionChecked;
+        private bool canShowMasterPasswordForm = false;
 
         public Options(Launcher launcherWnd, Config config)
         {
@@ -26,6 +27,8 @@ namespace Tunetoon.Forms
             SelectionCheckBox.Checked = endSelectionChecked = config.SelectEndGames;
             GlobalEndCheckBox.Checked = config.GlobalEndAll;
             EncryptAccsCheckBox.Checked = config.EncryptAccounts;
+
+            canShowMasterPasswordForm = true;
         }
 
         private void RewrittenPathButton_Click(object sender, EventArgs e)
@@ -71,6 +74,21 @@ namespace Tunetoon.Forms
             }
 
             Dispose();
+        }
+
+        private void masterPasswordFormCancelled()
+        {
+            EncryptAccsCheckBox.Checked = false;
+        }
+
+        private void EncryptAccsCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (canShowMasterPasswordForm && EncryptAccsCheckBox.Checked)
+            {
+                MasterPasswordRegister passwordRegister = new MasterPasswordRegister();
+                passwordRegister.formCancelled += masterPasswordFormCancelled;
+                passwordRegister.ShowDialog();
+            }
         }
     }
 }
