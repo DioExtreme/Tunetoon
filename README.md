@@ -20,7 +20,7 @@ Download from [Releases](https://github.com/DioExtreme/Tunetoon/releases)
 
 ## Compatibility
 
-This program only works with Windows 7 and newer versions.
+This program only works with Windows 10 and newer versions.
 
 In all cases, MacOS and Linux are unsupported due to Windows Forms being used in the project.
 
