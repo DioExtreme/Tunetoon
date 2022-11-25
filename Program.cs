@@ -35,10 +35,13 @@ namespace Tunetoon
         private static void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             var ex = (Exception)e.ExceptionObject;
-            string strPath = "Crash" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".txt";
+            string strPath = "Crash_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".txt";
             using (StreamWriter sw = File.AppendText(strPath))
             {
                 sw.WriteLine("Crash occurred at: " + DateTime.Now);
+                sw.WriteLine();
+                sw.WriteLine("Tunetoon version: " + Application.ProductVersion);
+                sw.WriteLine("OS Version: " + Environment.OSVersion.Version);
                 sw.WriteLine();
                 sw.WriteLine(ex.Message);
                 sw.WriteLine(ex.StackTrace);
