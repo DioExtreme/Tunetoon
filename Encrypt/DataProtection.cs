@@ -30,7 +30,7 @@ namespace Tunetoon.Encrypt
 
         public static void WriteJsonToEncryptedFile(byte[] jsonBytes, string fileName)
         {
-            string base64encrypted;
+            string base64Encrypted;
 
             using (var memoryStream = new MemoryStream())
             {
@@ -40,12 +40,12 @@ namespace Tunetoon.Encrypt
                     cs.Write(jsonBytes);
                 }
                 byte[] memoryStreamBytes = memoryStream.ToArray();
-                base64encrypted = Convert.ToBase64String(memoryStreamBytes);
+                base64Encrypted = Convert.ToBase64String(memoryStreamBytes);
             }
 
             using (var sw = new StreamWriter(fileName))
             {
-                sw.Write(base64encrypted);
+                sw.Write(base64Encrypted);
             }
         }
 
