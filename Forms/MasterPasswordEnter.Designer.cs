@@ -39,7 +39,7 @@
             this.startButton.Location = new System.Drawing.Point(9, 56);
             this.startButton.Name = "startButton";
             this.startButton.Size = new System.Drawing.Size(262, 23);
-            this.startButton.TabIndex = 0;
+            this.startButton.TabIndex = 1;
             this.startButton.Text = "Start";
             this.startButton.UseVisualStyleBackColor = true;
             this.startButton.Click += new System.EventHandler(this.startButton_Click);
@@ -49,7 +49,7 @@
             this.passwordTextbox.Location = new System.Drawing.Point(9, 27);
             this.passwordTextbox.Name = "passwordTextbox";
             this.passwordTextbox.Size = new System.Drawing.Size(260, 23);
-            this.passwordTextbox.TabIndex = 1;
+            this.passwordTextbox.TabIndex = 0;
             this.passwordTextbox.UseSystemPasswordChar = true;
             // 
             // enterPasswordLabel
@@ -63,6 +63,7 @@
             // 
             // MasterPasswordEnter
             // 
+            this.AcceptButton = this.startButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(283, 85);

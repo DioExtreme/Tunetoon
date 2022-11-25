@@ -41,7 +41,7 @@
             this.protectButton.Location = new System.Drawing.Point(9, 88);
             this.protectButton.Name = "protectButton";
             this.protectButton.Size = new System.Drawing.Size(265, 24);
-            this.protectButton.TabIndex = 0;
+            this.protectButton.TabIndex = 2;
             this.protectButton.Text = "Protect";
             this.protectButton.UseVisualStyleBackColor = true;
             this.protectButton.Click += new System.EventHandler(this.protectButton_Click);
@@ -51,7 +51,7 @@
             this.passwordTextbox.Location = new System.Drawing.Point(82, 22);
             this.passwordTextbox.Name = "passwordTextbox";
             this.passwordTextbox.Size = new System.Drawing.Size(192, 23);
-            this.passwordTextbox.TabIndex = 1;
+            this.passwordTextbox.TabIndex = 0;
             this.passwordTextbox.UseSystemPasswordChar = true;
             this.passwordTextbox.TextChanged += new System.EventHandler(this.passwordTextbox_TextChanged);
             // 
@@ -60,7 +60,7 @@
             this.passwordConfirmTextbox.Location = new System.Drawing.Point(82, 59);
             this.passwordConfirmTextbox.Name = "passwordConfirmTextbox";
             this.passwordConfirmTextbox.Size = new System.Drawing.Size(192, 23);
-            this.passwordConfirmTextbox.TabIndex = 2;
+            this.passwordConfirmTextbox.TabIndex = 1;
             this.passwordConfirmTextbox.UseSystemPasswordChar = true;
             this.passwordConfirmTextbox.TextChanged += new System.EventHandler(this.passwordConfirmTextbox_TextChanged);
             // 
@@ -84,6 +84,7 @@
             // 
             // MasterPasswordRegister
             // 
+            this.AcceptButton = this.protectButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(283, 119);
@@ -98,7 +99,7 @@
             this.MinimizeBox = false;
             this.Name = "MasterPasswordRegister";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Master Password";
+            this.Text = "Create a password";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.onFormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
