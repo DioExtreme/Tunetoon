@@ -54,10 +54,11 @@ namespace Tunetoon.Forms
             var clashAuthorization = new ClashAuthorization();
             clashAuthorization.AddAccount(account);
 
+            SaveButton.Text = "Save";
+            SaveButton.Enabled = true;
+
             if (clashAuthorization.LastReason != 0)
             {
-                SaveButton.Text = "Save";
-                SaveButton.Enabled = true;
                 MessageBox.Show(clashAuthorization.LastMessage, "Server response", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
