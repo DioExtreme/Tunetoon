@@ -10,25 +10,28 @@ Download from [Releases](https://github.com/DioExtreme/Tunetoon/releases)
 
 ## Main Features
 - Unlimited accounts
-- Can use any directory for the game files
 - Game patching for both servers
+- Can use any directory for the game files
 - Indicator for logged in accounts
 - End game instances with a click
 - Toon select for Corporate Clash
-- Accounts are auto-saved and secured with DPAPI
-- Account data is non-transferrable to another computer for security reasons
+- Accounts are auto-saved and can be encrypted
 
 ## Compatibility
 
-This program only works with Windows 10 and newer versions.
-
 In all cases, MacOS and Linux are unsupported due to Windows Forms being used in the project.
+
+You can use Wine, however.
 
 ### For versions v2.0.0.0 or higher:
 
-[.NET 7](https://dotnet.microsoft.com/download/dotnet-framework/thank-you/net48-web-installer) is required.
+Windows 10 or newer is required.
+
+[.NET 7](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-7.0.0-windows-x64-installer) is required.
 
 ### For versions older than v2.0.0.0:
+
+Windows 7 or newer is required.
 
 Windows versions older than Windows 10 May Update 2019 need [.NET Framework 4.8](https://dotnet.microsoft.com/download/dotnet-framework/thank-you/net48-web-installer)
 
