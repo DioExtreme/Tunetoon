@@ -45,7 +45,7 @@ namespace Tunetoon.BZip2
 				using (BZip2InputStream bzipInput = new BZip2InputStream(inStream))
 				{
 					bzipInput.IsStreamOwner = isStreamOwner;
-					StreamUtils.Copy(bzipInput, outStream, new byte[4096]);
+					bzipInput.CopyTo(outStream);
 				}
 			}
 			finally
