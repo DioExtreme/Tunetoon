@@ -24,13 +24,13 @@ This program only works with Windows 7 and newer versions.
 
 In all cases, MacOS and Linux are unsupported due to Windows Forms being used in the project.
 
-### For versions older than v2.0.0.0:
-
-Windows versions older than Windows 10 May Update 2019 need [.NET Framework 4.8](https://dotnet.microsoft.com/download/dotnet-framework/thank-you/net48-web-installer)
-
 ### For versions v2.0.0.0 or higher:
 
 [.NET 7](https://dotnet.microsoft.com/download/dotnet-framework/thank-you/net48-web-installer) is required.
+
+### For versions older than v2.0.0.0:
+
+Windows versions older than Windows 10 May Update 2019 need [.NET Framework 4.8](https://dotnet.microsoft.com/download/dotnet-framework/thank-you/net48-web-installer)
 
 ## Building
 Open the solution (.sln) in Visual Studio and build for "Release".
