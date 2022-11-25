@@ -7,7 +7,7 @@ namespace Tunetoon.Patcher
 {
     public class FileDownloader
     {
-        private SemaphoreSlim semaphore = new SemaphoreSlim(2);
+        private SemaphoreSlim semaphore = new SemaphoreSlim(4);
         private HttpClient httpClient = Program.HttpClient;
 
         public async Task<int> GetFileAsync(string url, string filePath)

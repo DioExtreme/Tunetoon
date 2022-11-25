@@ -7,27 +7,29 @@ using Tunetoon.Forms;
 
 namespace Tunetoon
 {
-    internal static class Program 
+    internal static class Program
     {
-        public static HttpClient HttpClient = new HttpClient();
+        public static HttpClient HttpClient;
 
         [STAThread]
-        private static void Main() 
+        private static void Main()
         {
             ServicePointManager.DefaultConnectionLimit = 2 * Environment.ProcessorCount;
+            HttpClient = new HttpClient();
 
             const string Github = "https://github.com/DioExtreme/Tunetoon";
             HttpClient.DefaultRequestHeaders.Add("User-Agent", $"Tunetoon - A multi-toon launcher. ({Github})");
 
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
             AppDomain.CurrentDomain.UnhandledException += App_UnhandledException;
+
             Directory.SetCurrentDirectory(Application.StartupPath);
 
             Application.EnableVisualStyles();
             Application.SetHighDpiMode(HighDpiMode.DpiUnawareGdiScaled);
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Application.Run(new Launcher());            
+            Application.Run(new Launcher());
         }
 
         private static void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
