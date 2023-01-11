@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel;
+using System.Diagnostics;
 using Tunetoon.Accounts;
 using Tunetoon.Login;
 
@@ -15,6 +16,6 @@ namespace Tunetoon.Game
         void StopGame(T account);
         void StopGame(T account, Process gameProcess);
 
-        void StartGameForLoggedInAccounts(AccountList<T> accountList);
+        void StartGameForLoggedInAccounts(BindingList<T> accountList);
     }
 }

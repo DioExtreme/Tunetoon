@@ -164,7 +164,6 @@ namespace Tunetoon.Forms
             this.accountGrid.ShowCellToolTips = false;
             this.accountGrid.Size = new System.Drawing.Size(600, 288);
             this.accountGrid.TabIndex = 3;
-            this.accountGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.AccGrid_OnCellDoubleClick);
             this.accountGrid.CellMouseUp += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.AccGrid_OnCellMouseUp);
             this.accountGrid.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.AccGrid_CellValueChanged);
             this.accountGrid.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.AccGrid_DataBindingComplete);

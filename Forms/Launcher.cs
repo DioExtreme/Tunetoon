@@ -18,8 +18,8 @@ namespace Tunetoon.Forms
     {
         private DataHandler dataHandler = new DataHandler();
 
-        private AccountList<RewrittenAccount> rewrittenAccountList = new AccountList<RewrittenAccount>();
-        private AccountList<ClashAccount> clashAccountList = new AccountList<ClashAccount>();
+        private BindingList<RewrittenAccount> rewrittenAccountList = new BindingList<RewrittenAccount>();
+        private BindingList<ClashAccount> clashAccountList = new BindingList<ClashAccount>();
         private dynamic currentAccountList;
 
         private BindingSource bindingSource = new BindingSource();
@@ -66,7 +66,7 @@ namespace Tunetoon.Forms
             accountDecryptor.Authenticate(config);
         }
 
-        public void onPassedAuthentication(AccountList<RewrittenAccount> rewrittenAccountList, AccountList<ClashAccount> clashAccountList)
+        public void onPassedAuthentication(BindingList<RewrittenAccount> rewrittenAccountList, BindingList<ClashAccount> clashAccountList)
         {
             this.rewrittenAccountList = rewrittenAccountList;
             this.clashAccountList = clashAccountList;
@@ -258,16 +258,6 @@ namespace Tunetoon.Forms
             }
 
             gridHandler.DataBindingComplete(accountGrid);
-        }
-
-        // Allows sorting the Toon column
-        private void AccGrid_OnCellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            var data = currentAccountList;
-            if (e.RowIndex < 0 && e.ColumnIndex == Toon.Index)
-            {
-                data.ApplySort();
-            }
         }
 
         // Runs after NotifyPropertyChanged, see Account class
@@ -477,8 +467,6 @@ namespace Tunetoon.Forms
 
         private void MoveModeIntent(bool keyHeldDown)
         {
-            currentAccountList.RemoveSort();
-            accountGrid.ClearGridSelections();
             if (keyHeldDown == false && config.SelectEndGames)
             {
                 endSelectedMenuItem.Visible = true;

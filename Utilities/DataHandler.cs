@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using Tunetoon.Accounts;
 using System.Text.Json;
@@ -34,7 +35,7 @@ namespace Tunetoon.Utilities
             }
         }
 
-        public void FindClashIngameToons(AccountList<ClashAccount> clashAccountList)
+        public void FindClashIngameToons(BindingList<ClashAccount> clashAccountList)
         {
             foreach (ClashAccount clashAccount in clashAccountList)
             {
@@ -65,10 +66,10 @@ namespace Tunetoon.Utilities
             return obj;
         }
 
-        public AccountList<T> LoadEncrypted<T>(string masterPassword, string file) where T : Account
+        public BindingList<T> LoadEncrypted<T>(string masterPassword, string file) where T : Account
         {
             string json = DataProtection.ReadJsonFromEncryptedFile(masterPassword, file);
-            return JsonSerializer.Deserialize<AccountList<T>>(json);
+            return JsonSerializer.Deserialize<BindingList<T>>(json);
         }
 
         public Config LoadConfig(string file)
@@ -150,7 +151,7 @@ namespace Tunetoon.Utilities
             WriteObjectToFile(accountList, file);
         }
 
-        public void SaveEncrypted<T>(AccountList<T> accountList, string file) where T : Account
+        public void SaveEncrypted<T>(BindingList<T> accountList, string file) where T : Account
         {
             WriteObjectToEncryptedFile(accountList, file);
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using Tunetoon.Accounts;
 using Tunetoon.Login;
@@ -64,7 +65,7 @@ namespace Tunetoon.Game
             }
         }
 
-        public void StartGameForLoggedInAccounts(AccountList<T> accountList)
+        public void StartGameForLoggedInAccounts(BindingList<T> accountList)
         {
             foreach (var account in accountList)
             {

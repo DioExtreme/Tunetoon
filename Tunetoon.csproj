@@ -15,7 +15,7 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
+    <ApplicationVersion>2.0.1.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
@@ -37,9 +37,9 @@
     <DelaySign>false</DelaySign>
     <SignAssembly>False</SignAssembly>
     <ErrorReport>none</ErrorReport>
-    <VersionPrefix>2.0.0</VersionPrefix>
+    <VersionPrefix>2.0.1</VersionPrefix>
     <Description>A multi-toon launcher</Description>
-    <Copyright>Copyright © 2017-2022 Null / DioExtreme</Copyright>
+    <Copyright>Copyright © 2017-2023 Null / DioExtreme</Copyright>
     <Company>Null / DioExtreme</Company>
     <Title>Tunetoon</Title>
     <PackageProjectUrl>https://github.com/DioExtreme</PackageProjectUrl>
