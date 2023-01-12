@@ -2,41 +2,16 @@
   <PropertyGroup>
     <TargetFramework>net7.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <AnalysisLevel>latest</AnalysisLevel>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>2.0.1.%2a</ApplicationVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <UseWindowsForms>true</UseWindowsForms>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Platforms>AnyCPU;x64</Platforms>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject>Tunetoon.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>toaster.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>false</SignManifests>
-  </PropertyGroup>
-  <PropertyGroup>
-    <DelaySign>false</DelaySign>
-    <SignAssembly>False</SignAssembly>
-    <ErrorReport>none</ErrorReport>
     <VersionPrefix>2.0.1</VersionPrefix>
     <Description>A multi-toon launcher</Description>
     <Copyright>Copyright © 2017-2023 Null / DioExtreme</Copyright>
@@ -44,6 +19,9 @@
     <Title>Tunetoon</Title>
     <PackageProjectUrl>https://github.com/DioExtreme</PackageProjectUrl>
     <RepositoryUrl>https://github.com/DioExtreme/Tunetoon</RepositoryUrl>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ErrorReport>none</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebugType>full</DebugType>
