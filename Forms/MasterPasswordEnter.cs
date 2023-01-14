@@ -1,14 +1,11 @@
 ﻿using System.Windows.Forms;
 using Tunetoon.Encrypt;
-using Tunetoon.Utilities;
 
 namespace Tunetoon.Forms
 {
     
     public partial class MasterPasswordEnter : Form
     {
-        
-        private DataHandler dataHandler = new DataHandler();
         private AccountDecryptor accountDecryptor;
         public MasterPasswordEnter(AccountDecryptor accountDecryptor)
         {
