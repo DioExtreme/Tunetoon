@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Threading.Tasks;
 using Tunetoon.Accounts;
 
@@ -10,7 +9,7 @@ namespace Tunetoon.Login
     {
         public List<T> AccountsToTwoStepAuth = new List<T>();
 
-        public virtual async Task RequestLogin(BindingList<T> accountList)
+        public virtual async Task RequestLogin(AccountList<T> accountList)
         {
             AccountsToTwoStepAuth.Clear();
 
@@ -32,7 +31,7 @@ namespace Tunetoon.Login
             await Task.CompletedTask;
         }
 
-        public async Task LoginAccounts(BindingList<T> accountList)
+        public async Task LoginAccounts(AccountList<T> accountList)
         {
             await RequestLogin(accountList);
             await HandleTwoStep();
