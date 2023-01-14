@@ -21,6 +21,11 @@ namespace Tunetoon.Patcher
 
         public virtual void Initialize(string directory)
         {
+            if (HasFailed())
+            {
+                status = PatcherStatus.Success;
+            }
+
             if (Directory.Exists(directory))
             {
                 return;
