@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.CompilerServices;
 
 namespace Tunetoon.BZip2
 {
@@ -76,6 +77,7 @@ namespace Tunetoon.BZip2
 		during decompression.
 		--*/
 		private int[] unzftab = new int[256];
+		private byte[] yy = new byte[256];
 
 		private int[][] limit = new int[BZip2Constants.GroupCount][];
 		private int[][] baseArray = new int[BZip2Constants.GroupCount][];
@@ -306,10 +308,6 @@ namespace Tunetoon.BZip2
 				case NO_RAND_PART_C_STATE:
 					SetupNoRandPartC();
 					break;
-
-				case START_BLOCK_STATE:
-				case NO_RAND_PART_A_STATE:
-					break;
 			}
 			return retChar;
 		}
@@ -364,8 +362,9 @@ namespace Tunetoon.BZip2
             }
 
 			// storedBlockCRC
-			ReadInt32();
+			ReadBits(32);
 
+			// blockRandomised
 			ReadBits(1);
 
 			GetAndMoveToFrontDecode();
@@ -375,16 +374,9 @@ namespace Tunetoon.BZip2
 
 		private void FillBuffer()
 		{
-			int byteRead = 0;
+			int byteRead;
 
-			try
-			{
-				byteRead = baseStream.ReadByte();
-			}
-			catch (Exception)
-			{
-				CompressedStreamEOF();
-			}
+			byteRead = baseStream.ReadByte();
 
 			if (byteRead == -1)
 			{
@@ -412,15 +404,6 @@ namespace Tunetoon.BZip2
 			return (char)ReadBits(8);
 		}
 
-		private int ReadInt32()
-		{
-			int result = ReadBits(8);
-			result = (result << 8) | ReadBits(8);
-			result = (result << 8) | ReadBits(8);
-			result = (result << 8) | ReadBits(8);
-			return result;
-		}
-
 		private void RecvDecodingTables()
 		{
 			char[][] len = new char[BZip2Constants.GroupCount][];
@@ -429,21 +412,19 @@ namespace Tunetoon.BZip2
 				len[i] = new char[BZip2Constants.MaximumAlphaSize];
 			}
 
-			bool[] inUse16 = new bool[16];
-
 			//--- Receive the mapping table ---
-			for (int i = 0; i < 16; i++)
-			{
-				inUse16[i] = (ReadBits(1) == 1);
-			}
+			int inUse16 = ReadBits(16);
 
 			for (int i = 0; i < 16; i++)
 			{
-				if (inUse16[i])
+				int twoToThePowerOfi = 1 << 15 - i;
+				if ((inUse16 & twoToThePowerOfi) != 0)
 				{
+					int bitField = ReadBits(16);
 					for (int j = 0; j < 16; j++)
 					{
-						inUse[i * 16 + j] = (ReadBits(1) == 1);
+						int twoToThePowerOfj = 1 << 15 - j;
+						inUse[i * 16 + j] = (bitField & twoToThePowerOfj) != 0;
 					}
 				}
 				else
@@ -528,9 +509,30 @@ namespace Tunetoon.BZip2
 			}
 		}
 
-		private void GetAndMoveToFrontDecode()
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private int GetNextSym(int groupNo)
 		{
-			byte[] yy = new byte[256];
+			int zt = selector[groupNo];
+			int zn = minLens[zt];
+			int zvec = ReadBits(zn);
+			int zj;
+
+			while (zvec > limit[zt][zn])
+			{
+				zn++;
+				if (bitCount < 1)
+				{
+					FillBuffer();
+				}
+				zj = (bitBuffer >> (bitCount - 1)) & 1;
+				bitCount--;
+				zvec = (zvec << 1) | zj;
+			}
+			return perm[zt][zvec - baseArray[zt][zn]];
+		}
+
+		private unsafe void GetAndMoveToFrontDecode()
+		{
 			int nextSym;
 
 			int limitLast = BZip2Constants.BaseBlockSize * blockSize100k;
@@ -550,70 +552,28 @@ namespace Tunetoon.BZip2
 			for (int i = 0; i <= 255; i++)
 			{
 				unzftab[i] = 0;
-			}
-
-			for (int i = 0; i <= 255; i++)
-			{
 				yy[i] = (byte)i;
 			}
 
 			last = -1;
 
-			if (groupPos == 0)
-			{
-				groupNo++;
-				groupPos = BZip2Constants.GroupSize;
-			}
+			groupNo++;
+			groupPos = BZip2Constants.GroupSize;
 
 			groupPos--;
-			int zt = selector[groupNo];
-			int zn = minLens[zt];
-			int zvec = ReadBits(zn);
-			int zj;
 
-			while (zvec > limit[zt][zn])
+			nextSym = GetNextSym(groupNo);
+			while (nextSym != EOB)
 			{
-				if (zn > 20)
-				{ // the longest code
-					throw new BZip2Exception("Bzip data error");
-				}
-				zn++;
-				while (bitCount < 1)
-				{
-					FillBuffer();
-				}
-				zj = (bitBuffer >> (bitCount - 1)) & 1;
-				bitCount--;
-				zvec = (zvec << 1) | zj;
-			}
-			if (zvec - baseArray[zt][zn] < 0 || zvec - baseArray[zt][zn] >= BZip2Constants.MaximumAlphaSize)
-			{
-				throw new BZip2Exception("Bzip data error");
-			}
-			nextSym = perm[zt][zvec - baseArray[zt][zn]];
-
-			while (true)
-			{
-				if (nextSym == EOB)
-				{
-					break;
-				}
-
-				if (nextSym == BZip2Constants.RunA || nextSym == BZip2Constants.RunB)
+				if (nextSym <= BZip2Constants.RunB)
 				{
 					int s = -1;
 					int n = 1;
 					do
 					{
-						if (nextSym == BZip2Constants.RunA)
-						{
-							s += (0 + 1) * n;
-						}
-						else if (nextSym == BZip2Constants.RunB)
-						{
-							s += (1 + 1) * n;
-						}
-
+						// nextSym is always 0 or 1 so just left shift
+						// n with it to avoid the if-else check
+						s += n << nextSym;
 						n <<= 1;
 
 						if (groupPos == 0)
@@ -624,23 +584,8 @@ namespace Tunetoon.BZip2
 
 						groupPos--;
 
-						zt = selector[groupNo];
-						zn = minLens[zt];
-						zvec = ReadBits(zn);
-
-						while (zvec > limit[zt][zn])
-						{
-							zn++;
-							while (bitCount < 1)
-							{
-								FillBuffer();
-							}
-							zj = (bitBuffer >> (bitCount - 1)) & 1;
-							bitCount--;
-							zvec = (zvec << 1) | zj;
-						}
-						nextSym = perm[zt][zvec - baseArray[zt][zn]];
-					} while (nextSym == BZip2Constants.RunA || nextSym == BZip2Constants.RunB);
+						nextSym = GetNextSym(groupNo);
+					} while (nextSym <= BZip2Constants.RunB);
 
 					s++;
 					byte ch = seqToUnseq[yy[0]];
@@ -657,7 +602,6 @@ namespace Tunetoon.BZip2
 					{
 						BlockOverrun();
 					}
-					continue;
 				}
 				else
 				{
@@ -671,7 +615,29 @@ namespace Tunetoon.BZip2
 					unzftab[seqToUnseq[tmp]]++;
 					ll8[last] = seqToUnseq[tmp];
 
-					Buffer.BlockCopy(yy, 0, yy, 1, nextSym - 1);
+					int yyBytesToShift = nextSym - 1;
+
+					// Unrolled until 8 bytes with fallthrough
+					// memmove for anything higher
+					// Very hot code path, so micro-optimize
+					switch (yyBytesToShift)
+					{
+						case 8: yy[8] = yy[7]; goto case 7;
+						case 7: yy[7] = yy[6]; goto case 6;
+						case 6: yy[6] = yy[5]; goto case 5;
+						case 5: yy[5] = yy[4]; goto case 4;
+						case 4: yy[4] = yy[3]; goto case 3;
+						case 3: yy[3] = yy[2]; goto case 2;
+						case 2: yy[2] = yy[1]; goto case 1;
+						case 1: yy[1] = yy[0]; break;
+						default:
+							fixed (byte* ptr = yy)
+							{
+								// Will P/Invoke into native memmove due to overlap
+								Buffer.MemoryCopy(ptr, ptr + 1, 256, yyBytesToShift);
+							}
+							break;
+					}
 
 					yy[0] = tmp;
 
@@ -682,22 +648,8 @@ namespace Tunetoon.BZip2
 					}
 
 					groupPos--;
-					zt = selector[groupNo];
-					zn = minLens[zt];
-					zvec = ReadBits(zn);
-					while (zvec > limit[zt][zn])
-					{
-						zn++;
-						while (bitCount < 1)
-						{
-							FillBuffer();
-						}
-						zj = (bitBuffer >> (bitCount - 1)) & 1;
-						bitCount--;
-						zvec = (zvec << 1) | zj;
-					}
-					nextSym = perm[zt][zvec - baseArray[zt][zn]];
-					continue;
+					
+					nextSym = GetNextSym(groupNo);
 				}
 			}
 		}
@@ -706,12 +658,13 @@ namespace Tunetoon.BZip2
 		{
 			int[] cftab = new int[257];
 
-			cftab[0] = 0;
-			Array.Copy(unzftab, 0, cftab, 1, 256);
+			cftab[1] = unzftab[0];
+			int sum = cftab[1];
 
-			for (int i = 1; i <= 256; i++)
+			for (int i = 2; i <= 256; i++)
 			{
-				cftab[i] += cftab[i - 1];
+				sum += unzftab[i - 1];
+				cftab[i] = sum;
 			}
 
 			for (int i = 0; i <= last; i++)
@@ -720,8 +673,6 @@ namespace Tunetoon.BZip2
 				tt[cftab[ch]] = i;
 				cftab[ch]++;
 			}
-
-			cftab = null;
 
 			tPos = tt[origPtr];
 
@@ -746,6 +697,7 @@ namespace Tunetoon.BZip2
 			}
 			else
 			{
+				currentState = NO_RAND_PART_A_STATE;
 				InitBlock();
 				SetupBlock();
 			}
@@ -780,7 +732,7 @@ namespace Tunetoon.BZip2
 
 		private void SetupNoRandPartC()
 		{
-			if (j2 < (int)z)
+			if (j2 < z)
 			{
 				currentChar = ch2;
 				j2++;
@@ -847,6 +799,7 @@ namespace Tunetoon.BZip2
 			for (int i = 0; i < BZip2Constants.MaximumCodeLength; i++)
 			{
 				baseArray[i] = 0;
+				limit[i] = 0;
 			}
 
 			for (int i = 0; i < alphaSize; i++)
@@ -857,11 +810,6 @@ namespace Tunetoon.BZip2
 			for (int i = 1; i < BZip2Constants.MaximumCodeLength; i++)
 			{
 				baseArray[i] += baseArray[i - 1];
-			}
-
-			for (int i = 0; i < BZip2Constants.MaximumCodeLength; i++)
-			{
-				limit[i] = 0;
 			}
 
 			int vec = 0;
