@@ -1,4 +1,6 @@
 ﻿using System.IO;
+using System.Numerics;
+using System.Runtime.CompilerServices;
 using Tunetoon.BZip2;
 
 namespace Tunetoon.Utilities
@@ -36,22 +38,16 @@ namespace Tunetoon.Utilities
         private const long Bsdiff40 = 3473478480300364610L;
         private const int HeaderSize = 32;
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static int ReadFileOffset(this BinaryReader binaryReader)
         {
-            byte[] buffer = binaryReader.ReadBytes(8);
-
-            int value = buffer[3] & 0x7F;
-            for (int i = 2; i >= 0; i--)
+            ulong buffer = binaryReader.ReadUInt64();
+            // MSB
+            if (buffer > int.MaxValue)
             {
-                value <<= 8;
-                value |= buffer[i];
+                return unchecked(-(int)buffer);
             }
-
-            if ((buffer[7] & 0x80) != 0)
-            {
-                value = -value;
-            }
-            return value;
+            return unchecked((int)buffer);
         }
 
         public static void Apply(string inputFile, string patchFile)
@@ -144,7 +140,17 @@ namespace Tunetoon.Utilities
                         // add old data to diff string
                         oldData = inputReader.ReadBytes(x);
 
-                        for (int i = 0; i < x; i++)
+                        int remaining = x % Vector<byte>.Count;
+                        int iters = x - remaining;
+
+                        for (int i = 0; i < iters; i += Vector<byte>.Count)
+                        {
+                            var newDataVector = new Vector<byte>(newData, i);
+                            var oldDataVector = new Vector<byte>(oldData, i);
+                            (newDataVector + oldDataVector).CopyTo(newData, i);
+                        }
+
+                        for (int i = iters; i < x; i++)
                         {
                             newData[i] += oldData[i];
                         }
