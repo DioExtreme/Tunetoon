@@ -372,6 +372,7 @@ namespace Tunetoon.BZip2
 			currentState = START_BLOCK_STATE;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private void FillBuffer()
 		{
 			int byteRead;
