@@ -387,6 +387,7 @@ namespace Tunetoon.BZip2
 			bitCount += 8;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private int ReadBits(int n)
 		{
 			while (bitCount < n)
