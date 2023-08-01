@@ -16,7 +16,7 @@ namespace Tunetoon.Game
 
         public override void SetupBaseEnvVariables(ILoginResult result, Process gameProcess)
         {
-            gameProcess.StartInfo.EnvironmentVariables["TT_GAMESERVER"] = result.GameServer;
+            gameProcess.StartInfo.EnvironmentVariables["TT_GAMESERVER"] = config.ClashUrls.GameServer;
             gameProcess.StartInfo.EnvironmentVariables["TT_PLAYCOOKIE"] = result.Cookie;
         }
 

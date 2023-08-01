@@ -5,6 +5,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Tunetoon.Accounts;
+using Tunetoon.DioExtreme;
 using Tunetoon.Encrypt;
 using Tunetoon.Game;
 using Tunetoon.Grid;
@@ -182,6 +183,10 @@ namespace Tunetoon.Forms
 
         private async void Launcher_Shown(object sender, EventArgs e)
         {
+            if (config.GameServer == Server.Clash)
+            {
+                config.ClashUrls = ApiDataRetriever.LoadClashUrls();
+            }
             await StartUpdate();
         }
 
@@ -440,6 +445,12 @@ namespace Tunetoon.Forms
         private async void Clash_Click(object sender, EventArgs e)
         {
             config.GameServer = Server.Clash;
+
+            if (!config.ClashUrls.Initialized)
+            {
+                config.ClashUrls = ApiDataRetriever.LoadClashUrls();
+            }
+
             HandleConfig();
 
             bindingSource.DataSource = clashAccountList;

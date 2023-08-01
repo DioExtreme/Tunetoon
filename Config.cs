@@ -1,4 +1,6 @@
-﻿using static System.Environment;
+﻿using System.Text.Json.Serialization;
+using Tunetoon.DioExtreme;
+using static System.Environment;
 
 namespace Tunetoon
 {
@@ -19,5 +21,8 @@ namespace Tunetoon
         public bool SelectEndGames { get; set; }
 
         public bool GlobalEndAll { get; set; }
+
+        [JsonIgnore]
+        public ClashUrls ClashUrls { get; set; } = new ClashUrls();
      }
 }

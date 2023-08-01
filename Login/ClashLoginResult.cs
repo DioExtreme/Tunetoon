@@ -16,7 +16,7 @@ namespace Tunetoon.Login
         [JsonPropertyName("bad_token")]
         public bool BadToken { get; set; }
 
-        public string GameServer => "gs.corporateclash.net";
+        public string GameServer => "";
 
         public string Cookie => Token;
     }

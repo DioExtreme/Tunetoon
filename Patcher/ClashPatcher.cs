@@ -11,10 +11,6 @@ namespace Tunetoon.Patcher
         private List<ClashFile> patchManifest;
         private List<ClashFile> filesNeeded = new List<ClashFile>();
 
-        private const string WinManifest = "https://corporateclash.net/api/v1/launcher/manifest/v2/windows_production.js";
-        private const string ResourceManifest = "https://corporateclash.net/api/v1/launcher/manifest/v2/resources_production.js";
-        private const string UpdateUrl = "https://aws1.corporateclash.net/productionv2/";
-
         public ClashPatcher(Config config)
         {
             this.config = config;
@@ -39,12 +35,12 @@ namespace Tunetoon.Patcher
             try
             {
                 // Windows specific
-                string json = httpClient.GetStringAsync(WinManifest).Result;
+                string json = httpClient.GetStringAsync(config.ClashUrls.MainManifest).Result;
                 var manifest = JsonSerializer.Deserialize<ClashManifest>(json);
                 patchManifest.AddRange(manifest.Files);
 
                 // Resources
-                json = httpClient.GetStringAsync(ResourceManifest).Result;
+                json = httpClient.GetStringAsync(config.ClashUrls.ResourceManifest).Result;
                 manifest = JsonSerializer.Deserialize<ClashManifest>(json);
                 patchManifest.AddRange(manifest.Files);
             }
@@ -88,7 +84,7 @@ namespace Tunetoon.Patcher
         {
             string fileToDownload = GamePatchUtils.GetSha1HashString(file.FilePath);
 
-            string url = UpdateUrl + fileToDownload;
+            string url = config.ClashUrls.PatchServer + fileToDownload;
             string downloadedFilePath = config.ClashPath + fileToDownload;
             string extractedFilePath = downloadedFilePath + "~";
 
