@@ -14,5 +14,9 @@ namespace Tunetoon.Patcher
 
         [JsonPropertyName("compressed_sha1")]
         public string CompressedSha1 { get; set; }
+
+        // Not part of the API, determines if resource or platform-specific
+        [JsonIgnore]
+        public bool PlatformSpecific { get; set; } = false;
     }
 }

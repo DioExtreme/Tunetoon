@@ -37,7 +37,11 @@ namespace Tunetoon.Patcher
                 // Windows specific
                 string json = httpClient.GetStringAsync(config.ClashUrls.MainManifest).Result;
                 var manifest = JsonSerializer.Deserialize<ClashManifest>(json);
-                patchManifest.AddRange(manifest.Files);
+                foreach (ClashFile file in manifest.Files)
+                {
+                    file.PlatformSpecific = true;
+                    patchManifest.Add(file);
+                }
 
                 // Resources
                 json = httpClient.GetStringAsync(config.ClashUrls.ResourceManifest).Result;
@@ -82,7 +86,8 @@ namespace Tunetoon.Patcher
 
         private async Task AcquireFileAsync(ClashFile file)
         {
-            string fileToDownload = GamePatchUtils.GetSha1HashString(file.FilePath);
+            string platform = file.PlatformSpecific ? "windows" : "resources";
+            string fileToDownload = GamePatchUtils.GetSha1HashString(file.FilePath + platform);
 
             string url = config.ClashUrls.PatchServer + fileToDownload;
             string downloadedFilePath = config.ClashPath + fileToDownload;
