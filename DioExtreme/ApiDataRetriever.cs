@@ -24,7 +24,7 @@ namespace Tunetoon.DioExtreme
                 clashUrls = new ClashUrls();
                 clashUrls.Initialized = true;
                 clashUrls.GameServer = "gs-prd.corporateclash.net";
-                clashUrls.PatchServer = "https://aws1.corporateclash.net/productionv2/";
+                clashUrls.PatchServer = "https://r2prod.corporateclash.net/";
                 clashUrls.MainManifest = "https://corporateclash.net/api/v1/launcher/manifest/v3/production/windows";
                 clashUrls.ResourceManifest = "https://corporateclash.net/api/v1/launcher/manifest/v3/production/resources";
                 return clashUrls;

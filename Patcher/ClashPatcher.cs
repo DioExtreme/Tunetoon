@@ -87,10 +87,10 @@ namespace Tunetoon.Patcher
         private async Task AcquireFileAsync(ClashFile file)
         {
             string platform = file.PlatformSpecific ? "windows" : "resources";
-            string fileToDownload = GamePatchUtils.GetSha1HashString(file.FilePath + platform);
+            string localFileName = GamePatchUtils.GetSha1HashString(file.FilePath + platform);
 
-            string url = config.ClashUrls.PatchServer + fileToDownload;
-            string downloadedFilePath = config.ClashPath + fileToDownload;
+            string url = config.ClashUrls.PatchServer + platform + "/" + file.FilePath + ".gz";
+            string downloadedFilePath = config.ClashPath + localFileName;
             string extractedFilePath = downloadedFilePath + "~";
 
             int downloadStatus = await fileDownloader.DownloadAsync(url, downloadedFilePath);
@@ -120,7 +120,7 @@ namespace Tunetoon.Patcher
             if (GamePatchUtils.FileIsCorrect(extractedFilePath, file.Sha1))
             {
                 // Cheat a bit to avoid SHA1 hashes again
-                file.FileName = fileToDownload + "~";
+                file.FileName = localFileName + "~";
                 return;
             }
 
