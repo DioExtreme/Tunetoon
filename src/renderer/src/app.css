@@ -1,0 +1,98 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-base: #0d0a16;
+  --color-panel: #161024;
+  --color-raise: #1f1733;
+  --color-hover: #2a1f45;
+  --color-line: #352852;
+  --color-ink: #eae6f4;
+  --color-mute: #9b91b3;
+  --color-accent: #5b21b6;
+  --color-ok: #4ade80;
+  --color-warn: #fbbf24;
+  --color-bad: #f87171;
+}
+
+@utility field-input {
+  @apply rounded-md border border-line bg-raise px-3 py-2 text-sm text-ink outline-none focus:border-accent;
+}
+
+@utility field-label {
+  @apply flex flex-col gap-1 text-xs text-mute;
+}
+
+@utility hint {
+  @apply text-xs text-mute;
+}
+
+@utility section-heading {
+  @apply text-xs font-semibold tracking-wide text-mute uppercase;
+}
+
+@utility btn-primary {
+  @apply rounded-md bg-accent px-4 py-1.5 text-sm font-semibold text-white hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-40;
+}
+
+@utility btn-secondary {
+  @apply rounded-md border border-line px-3 py-1.5 text-sm hover:bg-hover disabled:cursor-not-allowed disabled:opacity-40;
+}
+
+@utility btn-danger {
+  @apply rounded-md border border-bad/40 px-3 py-1.5 text-sm text-bad hover:bg-bad/15 disabled:cursor-not-allowed disabled:opacity-40;
+}
+
+@utility list-row {
+  @apply flex items-center gap-3 rounded-lg border px-3 py-2;
+}
+
+@utility list-row-target {
+  @apply border-accent bg-hover;
+}
+
+@utility list-row-idle {
+  @apply border-line bg-raise hover:bg-hover;
+}
+
+@utility count-pill {
+  @apply ml-1 rounded-full bg-raise px-2 py-0.5 text-xs;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  user-select: none;
+  background: var(--color-base);
+  color: var(--color-ink);
+  font-family: 'Segoe UI Variable Text', 'Segoe UI', system-ui, sans-serif;
+}
+
+#app {
+  height: 100%;
+}
+
+input {
+  user-select: text;
+}
+
+@layer base {
+  :where(:focus-visible) {
+    outline: 1px solid var(--color-accent);
+    outline-offset: 1px;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-line);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-hover);
+}

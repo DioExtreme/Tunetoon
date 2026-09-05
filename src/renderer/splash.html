@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Tunetoon</title>
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'" />
+    <style>
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+        background: #0d0a16;
+        font-family: system-ui, sans-serif;
+        user-select: none;
+        -webkit-app-region: drag;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+      }
+      #status {
+        font-size: 12px;
+        color: #a79fc4;
+      }
+      .bar {
+        width: 200px;
+        height: 6px;
+        border-radius: 3px;
+        background: #241d38;
+        overflow: hidden;
+      }
+      #fill {
+        width: 0;
+        height: 100%;
+        background: #5b21b6;
+        transition: width 0.15s linear;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="status">Checking for updates…</div>
+    <div class="bar"><div id="fill"></div></div>
+    <script type="module" src="/src/splash.ts"></script>
+  </body>
+</html>

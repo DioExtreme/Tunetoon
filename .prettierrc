@@ -1,0 +1,8 @@
+{
+  "bracketSameLine": true,
+  "singleQuote": true,
+  "printWidth": 120,
+  "objectWrap": "collapse",
+  "trailingComma": "none",
+  "plugins": ["prettier-plugin-svelte"]
+}

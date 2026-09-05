@@ -1,0 +1,31 @@
+appId: com.dioextreme.tunetoon
+productName: Tunetoon
+publish:
+  provider: generic
+  url: https://tunetoon.dioextreme.com
+  channel: latest
+files:
+  - out/**
+compression: maximum
+afterPack: build/afterPack.js
+electronLanguages:
+  - en-US
+win:
+  target:
+    - nsis
+    - portable
+mac:
+  target:
+    - dmg
+    - zip
+  category: public.app-category.games
+  hardenedRuntime: true
+  entitlements: build/entitlements.mac.plist
+  entitlementsInherit: build/entitlements.mac.plist
+  notarize: true
+nsis:
+  artifactName: ${productName}-Setup-${version}.${ext}
+  oneClick: false
+  createDesktopShortcut: false
+  createStartMenuShortcut: false
+  include: build/installer.nsh

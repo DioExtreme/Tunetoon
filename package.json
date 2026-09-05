@@ -1,0 +1,38 @@
+{
+  "name": "tunetoon",
+  "version": "3.0.0",
+  "description": "A multi-toon launcher for Toontown Rewritten and Corporate Clash",
+  "main": "./out/main/index.js",
+  "author": "DioExtreme",
+  "license": "MIT",
+  "homepage": "https://github.com/DioExtreme/Tunetoon",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "typecheck:node": "tsc --noEmit -p tsconfig.node.json",
+    "typecheck:web": "svelte-check --tsconfig ./tsconfig.web.json",
+    "typecheck": "npm run typecheck:node && npm run typecheck:web",
+    "format": "prettier --write .",
+    "build:win": "npm run build && electron-builder --win",
+    "build:mac": "npm run build && electron-builder --mac"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^6.2.4",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/node": "^26.1.1",
+    "electron": "^44.2.0",
+    "electron-builder": "^26.15.3",
+    "electron-vite": "^5.0.0",
+    "prettier": "^3.9.6",
+    "prettier-plugin-svelte": "^4.1.1",
+    "svelte": "^5.56.7",
+    "svelte-check": "^4.7.3",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.6"
+  },
+  "dependencies": {
+    "electron-updater": "^6.8.9",
+    "koffi": "^3.1.2"
+  }
+}
